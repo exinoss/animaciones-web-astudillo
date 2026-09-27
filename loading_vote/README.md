@@ -8,8 +8,9 @@ Animación de **carga de datos**. Se construye el 6 de cinta sobre una papeleta,
 
 | Archivo | Qué es | ¿Se edita? |
 |---|---|---|
+| **`produccion/loader-vota6.min.json`** | ⭐ **El único archivo para el sitio web.** Variante transparente, optimizada (29 KB, ≈6.6 KB con gzip). Se reproduce con `lottie_light.min.js`. | No, lo genera el pipeline |
 | `loader-vota6-transparente.rawr` | Proyecto Glaxnimate, **variante para la web**: sin fondo, sombras grises y destellos rojos | Sí, en Glaxnimate (luego `pipeline.py desde-rawr loader`) |
-| `loader-vota6-transparente.json` | Lottie final de esa variante. **Es el que usa la web.** | No, se genera |
+| `loader-vota6-transparente.json` | Lottie exportado por Glaxnimate, sin optimizar (origen del de `produccion/`) | No, se genera |
 | `loader-vota6.rawr` | Proyecto Glaxnimate, **variante con fondo amarillo** a sangre (para GIF, redes y presentaciones) | Igual que arriba |
 | `loader-vota6.json` | Lottie final con fondo | No, se genera |
 | `loader-vota6.gif` | GIF 240×240 a 30 fps, sacado de la variante con fondo | No, se genera |
@@ -61,10 +62,15 @@ Después de cualquier cambio: `pipeline.py loader`, luego `pipeline.py verificar
 
 ## Cómo usarlo en la web
 
-Hay que usar **`loader-vota6-transparente.json`**, no el de fondo amarillo: ese parece una tarjeta pegada sobre la página.
+Usa **`produccion/loader-vota6.min.json`**. No uses la variante con fondo amarillo: parece una tarjeta pegada sobre la página.
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js"></script>
+<script>
+  const anim = lottie.loadAnimation({ container: velo.querySelector('.lottie'), renderer: 'svg',
+                                      loop: true, autoplay: true, path: '/animaciones/loader-vota6.min.json' });
+  // al terminar la carga: anim.destroy()
+</script>
 ```
 
 Pautas, implementadas en `conLoader()` de `demo-completa.html` y en `demo.html`:

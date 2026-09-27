@@ -4,14 +4,14 @@
         "colors": {
             "__type__": "NamedColorList",
             "name": "",
-            "uuid": "262ec743-00c0-437d-a97a-8d10bde8dedf",
+            "uuid": "db108aa3-fe40-41b0-b1bb-ec2df4f68074",
             "values": [
             ]
         },
         "compositions": {
             "__type__": "CompositionList",
             "name": "",
-            "uuid": "8d4dd4f9-a7e7-4bae-8505-0e2bd61916ad",
+            "uuid": "6735efa8-7b4c-4306-846b-5c3065895a48",
             "values": [
                 {
                     "__type__": "Composition",
@@ -122,7 +122,7 @@
                                                         "value": 0.12999999523162842
                                                     },
                                                     "use": null,
-                                                    "uuid": "05ce09e3-fa5f-40c1-a31d-65dd18ee23cf",
+                                                    "uuid": "760694a7-c12c-4719-93ad-fa72fd4a0f16",
                                                     "visible": true
                                                 },
                                                 {
@@ -146,7 +146,7 @@
                                                             "width": 164
                                                         }
                                                     },
-                                                    "uuid": "26c78ab8-2567-47e4-8c9d-1cb2c6bcd1d9",
+                                                    "uuid": "e5c3c3ad-e077-493f-993f-c467629e8541",
                                                     "visible": true
                                                 }
                                             ],
@@ -174,7 +174,7 @@
                                                     }
                                                 }
                                             },
-                                            "uuid": "17f69d93-dc33-4fec-9f94-533417d0bf54",
+                                            "uuid": "eedaddc9-4c76-436f-87e1-704483b427b3",
                                             "visible": true
                                         },
                                         {
@@ -200,7 +200,7 @@
                                                         "value": 1
                                                     },
                                                     "use": null,
-                                                    "uuid": "d6546988-e756-4e09-9b6f-2eebaf97964d",
+                                                    "uuid": "4986a6a2-afa5-42fc-96f8-e16875950cdd",
                                                     "visible": true
                                                 },
                                                 {
@@ -224,7 +224,7 @@
                                                             "width": 160
                                                         }
                                                     },
-                                                    "uuid": "fd28348b-36f5-4712-8aa0-4456ee295555",
+                                                    "uuid": "1fb7261d-9d1a-498f-94fd-e4ac49234f7d",
                                                     "visible": true
                                                 }
                                             ],
@@ -252,7 +252,7 @@
                                                     }
                                                 }
                                             },
-                                            "uuid": "1c651a11-6679-4c7d-85cf-5ba995636cf1",
+                                            "uuid": "f2345399-7596-4abf-a23b-c606d6997a52",
                                             "visible": true
                                         },
                                         {
@@ -278,7 +278,7 @@
                                                         "value": 1
                                                     },
                                                     "use": null,
-                                                    "uuid": "8803e072-729c-4365-8f5b-27e942a74216",
+                                                    "uuid": "111b7636-7510-4e7b-a7d0-2cdc5d704fd9",
                                                     "visible": true
                                                 },
                                                 {
@@ -302,7 +302,7 @@
                                                             "width": 160
                                                         }
                                                     },
-                                                    "uuid": "2ed12660-1803-453d-8188-0fd4c8377bab",
+                                                    "uuid": "cf9098e0-a441-43d6-83fd-69d4c989cb6e",
                                                     "visible": true
                                                 },
                                                 {
@@ -326,7 +326,7 @@
                                                             "width": 160
                                                         }
                                                     },
-                                                    "uuid": "ba216273-c823-451e-8fd4-36b6536b6fcd",
+                                                    "uuid": "c130c5a0-6e71-414b-b836-d2c469478bec",
                                                     "visible": true
                                                 }
                                             ],
@@ -354,7 +354,7 @@
                                                     }
                                                 }
                                             },
-                                            "uuid": "fb20dc22-d911-4673-881c-9f69e84455b6",
+                                            "uuid": "bb752616-0fc5-4158-8d40-beb748d8df96",
                                             "visible": true
                                         },
                                         {
@@ -390,7 +390,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "f4eef420-26e5-4fc5-8cd2-b622c6671657",
+                                                            "uuid": "21d0ace1-206d-4c28-a877-0fc56458ee4f",
                                                             "visible": true
                                                         },
                                                         {
@@ -527,7 +527,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "3e5d9779-e36a-42a7-889e-9d70bf6fcdb9",
+                                                            "uuid": "09fc6f7d-e1cd-4f01-9b44-5084ec7bd2d1",
                                                             "visible": true
                                                         },
                                                         {
@@ -664,7 +664,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "bb5a0387-0116-45fb-a5a4-2687fb273270",
+                                                            "uuid": "f044e050-19dd-4421-8f64-6b994ca0ff7b",
                                                             "visible": true
                                                         },
                                                         {
@@ -2046,7 +2046,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "8256b900-4e0b-46fd-bf20-b29ff836156a",
+                                                            "uuid": "2dbf120e-afb5-4c2d-8abb-d21b9858077b",
                                                             "visible": true
                                                         },
                                                         {
@@ -2633,7 +2633,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "bf1a34a2-8861-4828-9ee1-42af8dbee9d2",
+                                                            "uuid": "6d06f9cb-e02f-42de-849f-7f2e57ac5d71",
                                                             "visible": true
                                                         },
                                                         {
@@ -2755,7 +2755,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "51218236-e6c9-4297-b002-087cc8657301",
+                                                            "uuid": "7cba65b8-8b03-4bf8-99fd-762a8bd0a327",
                                                             "visible": true
                                                         },
                                                         {
@@ -3207,7 +3207,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "013c15d3-53e6-41c4-9642-5ac8cf166705",
+                                                            "uuid": "7538d276-6d7f-45c9-906c-6dd45d3739a2",
                                                             "visible": true
                                                         },
                                                         {
@@ -4079,7 +4079,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "111700b7-60d6-42b0-90d8-9b16e1f966fb",
+                                                            "uuid": "b34ac55f-ae5a-4f09-b7fe-f4dde2895b05",
                                                             "visible": true
                                                         }
                                                     ],
@@ -4107,7 +4107,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "48d7ce2c-246d-49f1-ab6d-68f5e176f0a3",
+                                                    "uuid": "df882ded-5e44-4a6c-aadf-0613c442ce7a",
                                                     "visible": true
                                                 },
                                                 {
@@ -4132,8 +4132,8 @@
                                                             "opacity": {
                                                                 "value": 1
                                                             },
-                                                            "use": "78390a56-ac39-4d45-818d-a7c088e32fde",
-                                                            "uuid": "765707fd-27db-4642-9d94-29023d8e580e",
+                                                            "use": "e13e4d45-77b3-4efe-a4cc-788dc34a7dc7",
+                                                            "uuid": "18220fa6-e7c4-4b9c-9d23-59357dd06f49",
                                                             "visible": true
                                                         },
                                                         {
@@ -4330,7 +4330,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "d799525a-c5e6-44c2-b1e1-4eebfe6c1d49",
+                                                            "uuid": "528931ff-11b4-432e-a9e9-a88ad7e3ad4d",
                                                             "visible": true
                                                         },
                                                         {
@@ -4407,7 +4407,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "f2ca8c76-5153-4012-87be-7da6d2fd3f64",
+                                                            "uuid": "9fcdce3f-f408-458e-9252-6296c82e4698",
                                                             "visible": true
                                                         },
                                                         {
@@ -4634,7 +4634,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "efe468f2-2c36-4587-a5ff-8ce59f9e2b7d",
+                                                            "uuid": "993b77fc-19ab-40f7-a5fc-4149543d27cd",
                                                             "visible": true
                                                         }
                                                     ],
@@ -4662,7 +4662,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "f48da857-a80e-4bc7-8981-2accb6c46bb8",
+                                                    "uuid": "72b2b7f2-4bc1-475d-aa53-c68155b9db80",
                                                     "visible": true
                                                 },
                                                 {
@@ -4687,8 +4687,8 @@
                                                             "opacity": {
                                                                 "value": 1
                                                             },
-                                                            "use": "6da093a8-6d57-40f8-93c8-36a550e13eca",
-                                                            "uuid": "f628077f-d106-47d8-9aff-fc043501107a",
+                                                            "use": "ec125f9b-05e4-4c85-98bc-13a024004e7c",
+                                                            "uuid": "4403016f-b3a2-441f-a063-4832a3501ae9",
                                                             "visible": true
                                                         },
                                                         {
@@ -5020,7 +5020,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "f8318f82-58d6-46c6-afc1-142605948575",
+                                                            "uuid": "58a66107-a375-46cc-8699-1e1f6d49d001",
                                                             "visible": true
                                                         }
                                                     ],
@@ -5048,7 +5048,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "d98835a7-844d-43e8-ac8a-1b45a2f1d9fe",
+                                                    "uuid": "90e83581-8a39-41f0-b9da-4fd436d5395e",
                                                     "visible": true
                                                 }
                                             ],
@@ -5076,7 +5076,7 @@
                                                     }
                                                 }
                                             },
-                                            "uuid": "a70727ef-1013-4bf4-af55-04ec0b5b748b",
+                                            "uuid": "803126df-1e77-48a5-9587-cff39887eb4f",
                                             "visible": true
                                         },
                                         {
@@ -5112,7 +5112,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "d2bcee16-8633-4046-a07d-97e6555c844f",
+                                                            "uuid": "bbbccf2c-90ff-42c0-8975-ea27c0369704",
                                                             "visible": true
                                                         },
                                                         {
@@ -5159,7 +5159,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "e30a7042-7b7a-4db1-bb65-ed430696bacf",
+                                                            "uuid": "80f2e357-89ab-4bab-bb84-f16eec133165",
                                                             "visible": true,
                                                             "width": {
                                                                 "value": 2.5
@@ -5186,7 +5186,7 @@
                                                                     "width": 124
                                                                 }
                                                             },
-                                                            "uuid": "da525aae-0947-4333-bbf8-75333607c941",
+                                                            "uuid": "5815da6b-4d43-4ba6-b743-ee730858d62a",
                                                             "visible": true
                                                         }
                                                     ],
@@ -5214,7 +5214,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "4e07e39e-5609-4bb2-b4ff-38353dc801f6",
+                                                    "uuid": "640af368-70fd-4b92-9d1d-7ab4bc15a80b",
                                                     "visible": true
                                                 },
                                                 {
@@ -5242,7 +5242,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "2ac52b16-8f0d-4e41-bc82-750af054c9bc",
+                                                            "uuid": "dd75dfad-25c6-47ee-aa22-fe379e01e562",
                                                             "visible": true,
                                                             "width": {
                                                                 "value": 3
@@ -5292,7 +5292,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "b89e1140-d25d-4b9d-9ae6-09a4023ff46e",
+                                                            "uuid": "6d5213aa-ffdc-418b-bdbe-4d0471f7a25c",
                                                             "visible": true
                                                         }
                                                     ],
@@ -5320,7 +5320,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "c8b3db6e-6fb4-467e-a454-e21dbdcb703e",
+                                                    "uuid": "2e3b4b40-146e-4785-ad31-1c5074c29dfc",
                                                     "visible": true
                                                 }
                                             ],
@@ -5348,7 +5348,7 @@
                                                     }
                                                 }
                                             },
-                                            "uuid": "956aef7c-66b5-4254-8c74-08f757f0e44f",
+                                            "uuid": "1ff8acbb-7d8e-4a80-a334-f89fb38cab65",
                                             "visible": true
                                         },
                                         {
@@ -5376,7 +5376,7 @@
                                                         "value": 1
                                                     },
                                                     "use": null,
-                                                    "uuid": "1ebde429-0edd-4639-8e6a-56cb2420b190",
+                                                    "uuid": "26172e68-cf63-4db0-a45f-e3f10ca335f1",
                                                     "visible": true,
                                                     "width": {
                                                         "value": 11
@@ -5397,7 +5397,7 @@
                                                         "value": 1
                                                     },
                                                     "use": null,
-                                                    "uuid": "e37d68a2-22ef-4317-be27-1c4c41d91fe4",
+                                                    "uuid": "f98fe011-eb0a-4bef-bc10-8e4654493a85",
                                                     "visible": true,
                                                     "width": {
                                                         "value": 7
@@ -5447,7 +5447,7 @@
                                                     "start": {
                                                         "value": 0
                                                     },
-                                                    "uuid": "10e77e89-a4d4-48a4-abda-5f177ff47385",
+                                                    "uuid": "02c71a35-0df5-4ea6-9557-b705e7555aca",
                                                     "visible": true
                                                 },
                                                 {
@@ -5494,7 +5494,7 @@
                                                             ]
                                                         }
                                                     },
-                                                    "uuid": "54b0a97c-62d5-48af-9373-bc9928576b86",
+                                                    "uuid": "9a227bf8-2f00-4151-b603-29d48a564c2c",
                                                     "visible": true
                                                 }
                                             ],
@@ -5572,7 +5572,7 @@
                                                     ]
                                                 }
                                             },
-                                            "uuid": "e2c1fe46-33a0-4265-ae2e-85c8450db269",
+                                            "uuid": "9e25809f-ce10-43b9-8fc4-1daa07885213",
                                             "visible": true
                                         },
                                         {
@@ -5608,7 +5608,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "e62b974e-8315-4156-9b0f-31803ee49b7c",
+                                                            "uuid": "71c50f2d-2d2d-4138-97d8-0df028b1178b",
                                                             "visible": true
                                                         },
                                                         {
@@ -5985,7 +5985,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "d40bbd92-a0ed-4c35-97d5-bf1853b032c2",
+                                                            "uuid": "907f30f6-1818-4af0-9e6d-a6856ce389fd",
                                                             "visible": true
                                                         }
                                                     ],
@@ -6013,7 +6013,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "03253df4-9e67-40c5-ab8d-d8d21dbbe037",
+                                                    "uuid": "500b9284-e181-419b-b327-c5a68f4d9464",
                                                     "visible": true
                                                 },
                                                 {
@@ -6039,7 +6039,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "3474245c-dbba-4299-84dd-077f4ccb9127",
+                                                            "uuid": "508d26ea-d8cb-4c04-94ac-b3c6e36f35bd",
                                                             "visible": true
                                                         },
                                                         {
@@ -6386,7 +6386,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "231a8217-64f0-4502-83ec-0830fd8f46e7",
+                                                            "uuid": "e38a8239-e05f-4321-98a8-55805ca34b03",
                                                             "visible": true
                                                         }
                                                     ],
@@ -6414,7 +6414,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "e8fecddc-99de-425e-9e2d-51fec315b07b",
+                                                    "uuid": "87d07342-1baa-4d6a-b852-a91f817aaf14",
                                                     "visible": true
                                                 },
                                                 {
@@ -6440,7 +6440,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "6e067e16-9c50-4448-ad67-5785614b3ecc",
+                                                            "uuid": "d8fa020c-e1c0-484d-9244-f8bd88daefc6",
                                                             "visible": true
                                                         },
                                                         {
@@ -6667,7 +6667,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "3eb5c6a6-63b3-4ba5-ab6e-9dbc81cb2801",
+                                                            "uuid": "ca46c9ac-4c0e-4900-9251-63750431d39e",
                                                             "visible": true
                                                         }
                                                     ],
@@ -6695,7 +6695,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "da5b8a1d-6955-4867-9c25-341dfa5f85a0",
+                                                    "uuid": "81e91225-b457-4e3a-814c-df6fb3460017",
                                                     "visible": true
                                                 },
                                                 {
@@ -6721,7 +6721,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "8cca991f-df60-41df-b8c2-64b029ede414",
+                                                            "uuid": "b8ad3fca-910b-40cc-b5c3-9488c645c2b9",
                                                             "visible": true
                                                         },
                                                         {
@@ -7038,7 +7038,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "20d3822b-e2ee-4837-8478-95b9fa39732b",
+                                                            "uuid": "f66a351d-48b4-48c9-985c-9c681833f97c",
                                                             "visible": true
                                                         }
                                                     ],
@@ -7066,7 +7066,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "b500bba8-ccee-4767-92f9-f3bb96b77eb1",
+                                                    "uuid": "fba66b56-ea0b-4512-b707-96817b70406c",
                                                     "visible": true
                                                 },
                                                 {
@@ -7092,7 +7092,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "e96d3a67-7bbe-428e-9178-c88fb1d532f6",
+                                                            "uuid": "3e06b858-e07d-4c57-a5a0-aa6f60e5eaad",
                                                             "visible": true
                                                         },
                                                         {
@@ -7169,7 +7169,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "33d7f5cc-fc77-49cd-93b0-937f95bd8d78",
+                                                            "uuid": "119fa811-cb9a-4e6e-b524-f65329b9e153",
                                                             "visible": true
                                                         }
                                                     ],
@@ -7197,7 +7197,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "756823e0-030d-478c-8162-13f7734967fd",
+                                                    "uuid": "1d62d9bc-c1d1-411b-aa0f-b8eee19c1a70",
                                                     "visible": true
                                                 },
                                                 {
@@ -7223,7 +7223,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "071d3498-9253-4744-9393-430630f183f9",
+                                                            "uuid": "ac71d434-83dc-4669-82bd-de5df3e11a3b",
                                                             "visible": true
                                                         },
                                                         {
@@ -8095,7 +8095,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "456554f0-2d5a-4a48-a148-385fae6d613d",
+                                                            "uuid": "4fa97605-de50-41dd-8454-4d979b549606",
                                                             "visible": true
                                                         }
                                                     ],
@@ -8123,7 +8123,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "54bd75ec-adcb-4271-9ebd-13d5c2c2e199",
+                                                    "uuid": "859c11ef-c116-4f7f-ace3-257ebf6027c7",
                                                     "visible": true
                                                 },
                                                 {
@@ -8149,7 +8149,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "032619e1-4540-4586-aaf2-22b5385a4cdb",
+                                                            "uuid": "86d2f679-ab28-42c8-8b4f-f1c5ce3735c6",
                                                             "visible": true
                                                         },
                                                         {
@@ -8301,7 +8301,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "10467af6-7130-4404-978c-682378f312a9",
+                                                            "uuid": "904b124b-94f1-415c-a685-9d3a60e3fe16",
                                                             "visible": true
                                                         },
                                                         {
@@ -8453,7 +8453,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "1749d19f-2d0d-4059-82a9-8c95a65a024e",
+                                                            "uuid": "abc4d3a3-8fc5-4228-92f8-adb7ef632ddd",
                                                             "visible": true
                                                         }
                                                     ],
@@ -8481,7 +8481,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "67b2db74-3ea6-473d-87ce-6fcd5b716d1e",
+                                                    "uuid": "904357e3-7d28-497e-91d8-7e4794e0a1aa",
                                                     "visible": true
                                                 },
                                                 {
@@ -8507,7 +8507,7 @@
                                                                 "value": 1
                                                             },
                                                             "use": null,
-                                                            "uuid": "f8642fce-2be4-4cf3-ad48-5b8ec21f714c",
+                                                            "uuid": "dd1e5bfd-96c1-4e46-afbc-75709aba5c89",
                                                             "visible": true
                                                         },
                                                         {
@@ -8599,7 +8599,7 @@
                                                                     ]
                                                                 }
                                                             },
-                                                            "uuid": "682c9f24-7b8f-4d2b-bf67-5018511f9162",
+                                                            "uuid": "f2ecb9b4-8019-4bb6-b659-3e4cb375da17",
                                                             "visible": true
                                                         }
                                                     ],
@@ -8627,7 +8627,7 @@
                                                             }
                                                         }
                                                     },
-                                                    "uuid": "c523ab86-8226-493b-a347-fe5d4c8af7ac",
+                                                    "uuid": "8730d494-9d49-426f-92e0-9820b806984c",
                                                     "visible": true
                                                 }
                                             ],
@@ -8966,7 +8966,7 @@
                                                     }
                                                 }
                                             },
-                                            "uuid": "31da44a9-1abc-4df3-9fbc-7b1e58150216",
+                                            "uuid": "1fd3e593-c7c6-4fa8-9dcd-d5aae46b2b2b",
                                             "visible": true
                                         }
                                     ],
@@ -9044,7 +9044,7 @@
                                             ]
                                         }
                                     },
-                                    "uuid": "20ea5c2b-4b1e-46af-afce-a47e018bd8c3",
+                                    "uuid": "d05b8a1c-d24e-419f-a708-1e62add33443",
                                     "visible": true
                                 }
                             ],
@@ -9072,11 +9072,11 @@
                                     }
                                 }
                             },
-                            "uuid": "3fd43cd4-343f-4f63-b202-a3febde5ade2",
+                            "uuid": "18b399e8-9709-4d0c-b148-191591df20e1",
                             "visible": true
                         }
                     ],
-                    "uuid": "117a8627-4c27-45fd-9030-833e5915a1bd",
+                    "uuid": "8edfec65-629a-411a-8a17-d5f5b689d79b",
                     "visible": true,
                     "width": 240
                 }
@@ -9085,14 +9085,14 @@
         "fonts": {
             "__type__": "FontList",
             "name": "",
-            "uuid": "3a0bfbed-3ec9-4b1f-90e0-8af2b61fd8b1",
+            "uuid": "e1c0684b-d9a5-4999-b6e8-977f67d1951c",
             "values": [
             ]
         },
         "gradient_colors": {
             "__type__": "GradientColorsList",
             "name": "",
-            "uuid": "eb53a9b6-38bc-4439-ad04-48cc72c2977f",
+            "uuid": "cdee6de2-112b-4902-9886-128a47d9cc82",
             "values": [
                 {
                     "__type__": "GradientColors",
@@ -9109,7 +9109,7 @@
                         ]
                     },
                     "name": "",
-                    "uuid": "9bb24596-3746-46f8-ac00-1c814709c8fa"
+                    "uuid": "810431e2-efa3-4283-832f-32e55dba5f1c"
                 },
                 {
                     "__type__": "GradientColors",
@@ -9126,18 +9126,18 @@
                         ]
                     },
                     "name": "",
-                    "uuid": "a2c24d3f-a6b6-401b-b711-a5d152a7b30b"
+                    "uuid": "2ef4c70f-475d-4e61-8ec5-09043fea8626"
                 }
             ]
         },
         "gradients": {
             "__type__": "GradientList",
             "name": "",
-            "uuid": "cf970a9d-03d7-4e7a-b24a-93deebcedf7f",
+            "uuid": "bef9b8ed-2ce2-4824-aae1-da9259fc945d",
             "values": [
                 {
                     "__type__": "Gradient",
-                    "colors": "9bb24596-3746-46f8-ac00-1c814709c8fa",
+                    "colors": "810431e2-efa3-4283-832f-32e55dba5f1c",
                     "end_point": {
                         "value": {
                             "x": 0,
@@ -9158,11 +9158,11 @@
                         }
                     },
                     "type": "Linear",
-                    "uuid": "78390a56-ac39-4d45-818d-a7c088e32fde"
+                    "uuid": "e13e4d45-77b3-4efe-a4cc-788dc34a7dc7"
                 },
                 {
                     "__type__": "Gradient",
-                    "colors": "a2c24d3f-a6b6-401b-b711-a5d152a7b30b",
+                    "colors": "2ef4c70f-475d-4e61-8ec5-09043fea8626",
                     "end_point": {
                         "value": {
                             "x": 0,
@@ -9183,19 +9183,19 @@
                         }
                     },
                     "type": "Linear",
-                    "uuid": "6da093a8-6d57-40f8-93c8-36a550e13eca"
+                    "uuid": "ec125f9b-05e4-4c85-98bc-13a024004e7c"
                 }
             ]
         },
         "images": {
             "__type__": "BitmapList",
             "name": "",
-            "uuid": "666ad439-727b-47a0-9162-1023b798b5f6",
+            "uuid": "276ee6b2-eb3d-47c3-a111-6714363f16c7",
             "values": [
             ]
         },
         "name": "",
-        "uuid": "00237e1e-8059-4800-a630-b3eaf1b14dbd"
+        "uuid": "e554d2aa-0607-4098-8a73-5541a517498c"
     },
     "format": {
         "format_version": 8,

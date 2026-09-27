@@ -6,6 +6,35 @@ Animaciones web para la campaña de la **Lista 6**, hechas con **Glaxnimate** y 
 
 > **Para otra IA o dev:** lee este archivo completo antes de tocar nada. Los `.json`, `.rawr`, `.gif` y las demos HTML **se generan**. No se editan a mano; se regeneran con el pipeline (ver [Flujo de trabajo](#flujo-de-trabajo)).
 
+## 🚀 Qué usar en el sitio web
+
+**Solo estos dos archivos van a producción.** Todo lo demás es material de trabajo.
+
+| Uso | Archivo | Tamaño (gzip) |
+|---|---|---|
+| Loading de datos | [`loading_vote/glaxnimate/produccion/loader-vota6.min.json`](loading_vote/glaxnimate/produccion/loader-vota6.min.json) | 29 KB (≈6.6 KB) |
+| Transición entre páginas | [`marca_vota6/glaxnimate/produccion/marca-vota6.min.json`](marca_vota6/glaxnimate/produccion/marca-vota6.min.json) | 26 KB (≈7.5 KB) |
+
+Reproductor: **`lottie_light`** (versión ligera de lottie-web: solo SVG, sin expresiones, ≈47 KB gzip frente a ≈77 KB del completo):
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js"></script>
+<script>
+  const anim = lottie.loadAnimation({
+    container: document.getElementById('loader'),
+    renderer: 'svg', loop: true, autoplay: true,
+    path: '/animaciones/loader-vota6.min.json'   // ruta donde lo publique tu sitio
+  });
+</script>
+```
+
+Por qué este formato:
+- **Lottie JSON** es vectorial, así que se ve nítido a cualquier tamaño, con transparencia real y en unos 7 KB. El GIF pesa entre 100 y 285 KB, se pixela y no tiene transparencia.
+- **Optimizado**: números redondeados a 3 decimales, sin nombres internos ni metadatos del editor. Es un 38 % más ligero comprimido que el `.json` de Glaxnimate y **se verificó píxel a píxel que se ve idéntico**.
+- **dotLottie (`.lottie`) descartado**: su reproductor usa WebAssembly y es bastante más pesado. Solo compensa con imágenes o con muchas animaciones.
+- Sirve los `.json` con compresión **gzip o brotli** (casi todos los hosting lo hacen por defecto) y con caché larga. Si el sitio es de producción, puedes alojar tú mismo `lottie_light.min.js` en lugar de usar el CDN.
+- La carpeta `produccion/` **la escribe el pipeline**: no se edita a mano. Tras un cambio, ejecuta el pipeline y copia de nuevo esos dos archivos al sitio.
+
 ## Qué hay
 
 | Carpeta / archivo | Qué es | README propio |
@@ -42,8 +71,9 @@ Qué hace, en orden, para cada animación:
 construir_*.py ──► *.fuente.json ──► Glaxnimate ──► *.rawr (proyecto editable)
                                                       │
                                                       ├─► Glaxnimate ──► *.json (Lottie final) ──► + marcadores
+                                                      │                     └─► optimizar ──► produccion/*.min.json  ◄── lo que usa la web
                                                       ├─► Glaxnimate render de todos los fotogramas ──► *.gif
-                                                      └─► plantillas/*.tpl.html + *.json incrustado ──► demos HTML
+                                                      └─► plantillas/*.tpl.html + produccion/*.min.json incrustado ──► demos HTML
 ```
 
 Subcomandos:
@@ -51,16 +81,17 @@ Subcomandos:
 | Comando | Qué regenera |
 |---|---|
 | `pipeline.py all` | Todo: loader, transición y demos |
-| `pipeline.py loader` | `loading_vote/glaxnimate/*` (las dos variantes, GIF y `demo.html`) |
-| `pipeline.py marca` | `marca_vota6/glaxnimate/*`, GIF y `marca_vota6/demo-header.html` |
+| `pipeline.py loader` | `loading_vote/glaxnimate/*` (las dos variantes, `produccion/`, GIF y `demo.html`) |
+| `pipeline.py marca` | `marca_vota6/glaxnimate/*` (incluido `produccion/`), GIF y `marca_vota6/demo-header.html` |
 | `pipeline.py demos` | Solo `demo-completa.html` (a partir de los `.json` actuales) |
 | `pipeline.py desde-rawr loader\|marca` | Respeta un `.rawr` **editado a mano en Glaxnimate** y regenera desde él `.json`, marcadores, GIF y demos (no ejecuta `construir_*.py`) |
 | `pipeline.py verificar <archivo.rawr> [fotogramas…]` | Hoja de contactos en `herramientas/_salida/hoja.png` renderizada por Glaxnimate, para **revisar visualmente** |
 
 ### Reglas del flujo (importante para IAs)
 
-1. **Después de cualquier cambio, ejecuta el pipeline completo de esa animación.** No basta con regenerar el `.json`: el **GIF** y las **demos HTML** llevan la animación incrustada y quedarían desactualizados. Una IA que no conozca este flujo suele olvidar el GIF y las demos. El pipeline los hace siempre.
-2. **No edites a mano** `*.json`, `*.fuente.json`, `*.gif`, `demo.html`, `demo-header.html` ni `demo-completa.html`. Edita el script o la plantilla en `herramientas/` y regenera.
+1. **Después de cualquier cambio, ejecuta el pipeline completo de esa animación.** No basta con regenerar el `.json`: el archivo de **`produccion/`**, el **GIF** y las **demos HTML** quedarían desactualizados. Una IA que no conozca este flujo suele olvidar alguno de ellos. El pipeline los hace siempre.
+2. **No edites a mano** `*.json`, `*.fuente.json`, `produccion/*.min.json`, `*.gif`, `demo.html`, `demo-header.html` ni `demo-completa.html`. Edita el script o la plantilla en `herramientas/` y regenera.
+2b. **Las demos usan los mismos archivos de `produccion/` y el mismo reproductor `lottie_light`** que la web. Si una demo se ve bien, lo que va a producción también.
 3. **Verifica visualmente antes de dar algo por terminado.** Usa `pipeline.py verificar` con los fotogramas clave (cada README de animación tiene su tabla de tiempos) y mira la imagen. Así se detectaron casi todos los errores durante el desarrollo.
 4. **Las dos animaciones comparten estilo.** Misma mano, mismo plumón azul y misma casilla con línea negra. Si cambias uno de esos elementos en una, cámbialo también en la otra.
 

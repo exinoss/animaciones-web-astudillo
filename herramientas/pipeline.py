@@ -22,6 +22,9 @@ SALIDA = HERR / "_salida"                     # temporal: fotogramas y hojas de 
 LOADER = ROOT / "loading_vote" / "glaxnimate"
 MARCA = ROOT / "marca_vota6" / "glaxnimate"
 PLANT = HERR / "plantillas"
+# Únicos archivos que usa la web (las demos también los usan, para probar exactamente lo que va a producción)
+LOADER_PROD = LOADER / "produccion" / "loader-vota6.min.json"     # variante transparente, optimizada
+MARCA_PROD = MARCA / "produccion" / "marca-vota6.min.json"         # con marcadores "marcar" / "salir"
 
 GX = Path(os.environ.get("GLAXNIMATE_EXE", Path(os.environ.get("LOCALAPPDATA", "")) / "Programs/Glaxnimate/bin/glaxnimate.exe"))
 
@@ -71,6 +74,25 @@ def convertir(carpeta: Path, nombre: str, desde_rawr=False):
     print(f"  ✔ {nombre}: .rawr y .json actualizados" + (" (+ marcadores)" if marcadores else ""))
 
 
+def produccion(origen: Path, destino: Path, decimales=3):
+    """Versión para la web: redondea números a `decimales`, quita nombres internos (nm/mn/ix) y metadatos
+    del editor, y compacta el JSON. Conserva los marcadores (su campo es `cm`, no `nm`).
+    Reproducir con lottie_light (sin expresiones, solo SVG): nuestras animaciones no usan expresiones."""
+    def limpiar(o):
+        if isinstance(o, float):
+            r = round(o, decimales)
+            return int(r) if r == int(r) else r
+        if isinstance(o, list):
+            return [limpiar(x) for x in o]
+        if isinstance(o, dict):
+            return {k: limpiar(v) for k, v in o.items() if k not in ("nm", "mn", "ix", "meta")}
+        return o
+    data = limpiar(json.loads(origen.read_text(encoding="utf-8")))
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    destino.write_text(json.dumps(data, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
+    print(f"  ✔ producción {destino.relative_to(ROOT)} ({destino.stat().st_size / 1024:.1f} KB)")
+
+
 def gif(rawr: Path, destino: Path, colores=160):
     """Renderiza todos los fotogramas con el motor de Glaxnimate y arma un GIF a 30 fps sobre blanco.
     (El exportador GIF de Glaxnimate 0.6 se cierra en Windows, por eso se hace así.)"""
@@ -105,8 +127,9 @@ def loader(desde_rawr=False):
         py("construir_loader.py", "transparente")     # versión para usar como loading en la web
     convertir(LOADER, "loader-vota6", desde_rawr)
     convertir(LOADER, "loader-vota6-transparente", desde_rawr)
+    produccion(LOADER / "loader-vota6-transparente.json", LOADER_PROD)
     gif(LOADER / "loader-vota6.rawr", LOADER / "loader-vota6.gif")
-    incrustar("demo-loader.tpl.html", LOADER / "demo.html", LOTTIE_DATA=LOADER / "loader-vota6-transparente.json")
+    incrustar("demo-loader.tpl.html", LOADER / "demo.html", LOTTIE_DATA=LOADER_PROD)
 
 
 def marca(desde_rawr=False):
@@ -114,14 +137,14 @@ def marca(desde_rawr=False):
     if not desde_rawr:
         py("construir_marca.py")
     convertir(MARCA, "marca-vota6", desde_rawr)
+    produccion(MARCA / "marca-vota6.json", MARCA_PROD)
     gif(MARCA / "marca-vota6.rawr", MARCA / "marca-vota6.gif")
-    incrustar("demo-header.tpl.html", ROOT / "marca_vota6" / "demo-header.html", LOTTIE_DATA=MARCA / "marca-vota6.json")
+    incrustar("demo-header.tpl.html", ROOT / "marca_vota6" / "demo-header.html", LOTTIE_DATA=MARCA_PROD)
 
 
 def demos():
     print("Demo combinada")
-    incrustar("demo-completa.tpl.html", ROOT / "demo-completa.html",
-              MARCA_DATA=MARCA / "marca-vota6.json", LOADER_DATA=LOADER / "loader-vota6-transparente.json")
+    incrustar("demo-completa.tpl.html", ROOT / "demo-completa.html", MARCA_DATA=MARCA_PROD, LOADER_DATA=LOADER_PROD)
 
 
 def verificar(archivo, fotogramas):

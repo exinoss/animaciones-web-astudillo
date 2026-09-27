@@ -13,6 +13,7 @@
 *.fuente.json -diff linguist-generated
 loading_vote/glaxnimate/*.json -diff linguist-generated
 marca_vota6/glaxnimate/*.json -diff linguist-generated
+*/glaxnimate/produccion/*.json -diff linguist-generated
 loading_vote/glaxnimate/demo.html linguist-generated
 marca_vota6/demo-header.html linguist-generated
 demo-completa.html linguist-generated

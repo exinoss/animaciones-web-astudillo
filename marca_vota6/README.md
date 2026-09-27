@@ -8,8 +8,9 @@ Animación de **transición entre páginas** para los botones del header. Aparec
 
 | Archivo | Qué es | ¿Se edita? |
 |---|---|---|
+| **`glaxnimate/produccion/marca-vota6.min.json`** | ⭐ **El único archivo para el sitio web.** Optimizado (26 KB, ≈7.5 KB con gzip), **con los marcadores `marcar` y `salir`**. Se reproduce con `lottie_light.min.js`. | No, lo genera el pipeline |
 | `glaxnimate/marca-vota6.rawr` | Proyecto Glaxnimate | Sí, en Glaxnimate (luego `pipeline.py desde-rawr marca`) |
-| `glaxnimate/marca-vota6.json` | Lottie final, **con los marcadores `marcar` y `salir`** | No, se genera |
+| `glaxnimate/marca-vota6.json` | Lottie exportado por Glaxnimate con los marcadores reinyectados, sin optimizar (origen del de `produccion/`) | No, se genera |
 | `glaxnimate/marca-vota6.gif` | GIF 240×200 sobre blanco, 30 fps | No, se genera |
 | `glaxnimate/marca-vota6.fuente.json` | Lottie intermedio que escribe `construir_marca.py` | No, se genera |
 | `demo-header.html` | Demo solo de la transición con un header de ejemplo. Plantilla: `herramientas/plantillas/demo-header.tpl.html` | No, se genera |
@@ -49,6 +50,17 @@ La demo con las dos animaciones juntas es [`../demo-completa.html`](../demo-comp
 Después de cualquier cambio: `pipeline.py marca`, luego `pipeline.py verificar marca_vota6/glaxnimate/marca-vota6.rawr 3 10 20 28 36 44 50`, y revisa `herramientas/_salida/hoja.png`.
 
 ## Cómo usarlo en la web (transición de página)
+
+Archivo: **`glaxnimate/produccion/marca-vota6.min.json`** con `lottie_light.min.js`:
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js"></script>
+<script>
+  const anim = lottie.loadAnimation({ container: document.getElementById('transicion-lottie'), renderer: 'svg',
+                                      loop: false, autoplay: false, path: '/animaciones/marca-vota6.min.json' });
+  // con path: los marcadores están en anim.animationData.markers una vez cargado (evento 'DOMLoaded')
+</script>
+```
 
 Implementado en `navegar()` de `demo-completa.html`:
 
