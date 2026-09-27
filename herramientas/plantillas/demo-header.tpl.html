@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo · Transición "Marca la 6"</title>
+  <style>
+    :root { --amarillo: #FEBF12; --rojo: #E82128; --azul: #004EA1; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, "Segoe UI", sans-serif; background: #fff; color: #1d2433; }
+
+    header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 24px;
+             padding: 12px 24px; background: var(--amarillo); box-shadow: 0 2px 0 rgba(0,0,0,.06); flex-wrap: wrap; }
+    .brand { font-weight: 900; font-style: italic; font-size: 22px; color: var(--rojo); letter-spacing: -.5px; }
+    .brand b { color: var(--azul); }
+    nav { display: flex; gap: 6px; flex-wrap: wrap; }
+    nav button { border: 0; background: transparent; font: inherit; font-weight: 700; color: var(--azul);
+                 padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+    nav button:hover { background: rgba(255,255,255,.45); }
+    nav button[aria-current="page"] { background: var(--azul); color: #fff; }
+
+    main { position: relative; min-height: calc(100vh - 64px); padding: 48px 24px; max-width: 880px; margin: 0 auto; }
+    main h1 { color: var(--rojo); font-size: clamp(28px, 5vw, 44px); margin: 0 0 12px; }
+
+    /* Transición entre páginas: cubre el contenido (el header queda visible) con la papeleta grande y centrada */
+    #transicion { position: fixed; inset: 64px 0 0 0; z-index: 20; display: grid; place-items: center;
+                  background: rgba(255, 248, 225, .94); backdrop-filter: blur(4px); }
+    #transicion > div { width: clamp(220px, 34vw, 400px); aspect-ratio: 240 / 200; }
+    main { transition: opacity .2s; }
+    main.cambiando { opacity: .35; }
+
+    .controles { position: fixed; right: 16px; bottom: 16px; background: #fff; border: 1px solid #e3e6ea;
+                 border-radius: 12px; padding: 10px 12px; font-size: 13px; box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Somos la <b>6</b></div>
+    <nav aria-label="Principal">
+      <button aria-current="page" data-page="inicio">Inicio</button>
+      <button data-page="propuestas">Propuestas</button>
+      <button data-page="candidatos">Candidatos</button>
+      <button data-page="donde-votar">Dónde votar</button>
+      <button data-page="unete">Únete</button>
+    </nav>
+  </header>
+
+  <main id="contenido"></main>
+
+  <div id="transicion" hidden><div id="lottie" role="img" aria-label="Marcando la 6"></div></div>
+
+  <label class="controles">Velocidad
+    <select id="vel">
+      <option value="1" selected>1× (0.93 s)</option>
+      <option value="1.3">1.3× (0.7 s)</option>
+    </select>
+  </label>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script>
+    const DATA = /*LOTTIE_DATA*/null;
+    const PAGINAS = {
+      "inicio": ["Inicio", "Bienvenido a la campaña de la lista 6."],
+      "propuestas": ["Propuestas", "Nuestras propuestas para el país."],
+      "candidatos": ["Candidatos", "Conoce a nuestro equipo."],
+      "donde-votar": ["Dónde votar", "Consulta tu local de votación."],
+      "unete": ["Únete", "Súmate como voluntario."],
+    };
+
+    const capa = document.getElementById('transicion');
+    const contenido = document.getElementById('contenido');
+    const anim = lottie.loadAnimation({
+      container: document.getElementById('lottie'), renderer: 'svg',
+      loop: false, autoplay: false, animationData: DATA,
+    });
+    // Segmentos definidos por los marcadores del Lottie
+    const seg = n => { const m = DATA.markers.find(x => x.cm === n); return [m.tm, m.tm + m.dr]; };
+
+    const pintar = id => { const [t, p] = PAGINAS[id]; contenido.innerHTML = `<h1>${t}</h1><p>${p}</p>`; };
+    const jugar = (nombre) => new Promise(ok => { anim.addEventListener('complete', ok, { once: true }); anim.playSegments(seg(nombre), true); });
+
+    let ocupado = false;
+    async function navegar(id, boton) {
+      if (ocupado || boton.getAttribute('aria-current')) return;
+      ocupado = true;
+      document.querySelectorAll('nav button').forEach(b => b.removeAttribute('aria-current'));
+      boton.setAttribute('aria-current', 'page');
+      anim.setSpeed(+document.getElementById('vel').value);
+      contenido.classList.add('cambiando');
+      capa.hidden = false;
+      // En una web real: iniciar la carga de la página aquí y esperar ambas cosas con Promise.all
+      await jugar('marcar');
+      pintar(id);
+      contenido.classList.remove('cambiando');
+      await jugar('salir');
+      capa.hidden = true;
+      ocupado = false;
+    }
+
+    document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => navegar(b.dataset.page, b)));
+    pintar('inicio');
+  </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo completa · Somos la 6</title>
+  <style>
+    :root { --amarillo: #FEBF12; --rojo: #E82128; --azul: #004EA1; --tinta: #1D2433; --gris: #6B7280; --borde: #E5E7EB; --header: 64px; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, "Segoe UI", sans-serif; color: var(--tinta); background: #F6F7F9; }
+
+    /* ---------- header ---------- */
+    header { position: sticky; top: 0; z-index: 30; height: var(--header); display: flex; align-items: center; gap: 28px;
+             padding: 0 24px; background: var(--amarillo); box-shadow: 0 2px 0 rgba(0,0,0,.06); overflow-x: auto; }
+    .marca { font-weight: 900; font-style: italic; font-size: 22px; color: var(--rojo); white-space: nowrap; }
+    .marca b { color: var(--azul); }
+    nav { display: flex; gap: 4px; }
+    nav button { border: 0; background: transparent; font: inherit; font-weight: 700; color: var(--azul); white-space: nowrap;
+                 padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+    nav button:hover { background: rgba(255,255,255,.45); }
+    nav button[aria-current="page"] { background: var(--azul); color: #fff; }
+
+    main { max-width: 980px; margin: 32px auto 80px; padding: 0 16px; }
+    h1 { font-size: clamp(26px, 4vw, 38px); margin: 0 0 8px; color: var(--rojo); }
+    .sub { color: var(--gris); margin: 0 0 24px; }
+
+    .panel { background: #fff; border: 1px solid var(--borde); border-radius: 14px; overflow: hidden; }
+    .barra { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--borde); }
+    .barra h2 { font-size: 17px; margin: 0; }
+    .btn { font: inherit; font-weight: 700; border: 0; border-radius: 10px; padding: 10px 18px; cursor: pointer; background: var(--azul); color: #fff; }
+    .btn:hover { background: #003A80; }
+    .btn:disabled { background: #7A9CC6; cursor: progress; }
+    .btn.rojo { background: var(--rojo); } .btn.rojo:hover { background: #C4151C; }
+
+    .hero { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); align-items: center; }
+    .hero p { font-size: 18px; line-height: 1.5; }
+    .tarjetas { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .tarjeta { background: #fff; border: 1px solid var(--borde); border-radius: 14px; padding: 20px; }
+    .tarjeta h3 { margin: 0 0 6px; color: var(--azul); font-size: 16px; }
+    .tarjeta p { margin: 0; color: var(--gris); font-size: 14px; line-height: 1.45; }
+
+    /* ---------- tabla ---------- */
+    .zona { position: relative; min-height: 360px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--gris);
+         background: #FAFAFB; padding: 12px 20px; border-bottom: 1px solid var(--borde); }
+    td { padding: 14px 20px; border-bottom: 1px solid var(--borde); }
+    tr.nueva { animation: entrar .35s ease-out both; }
+    @keyframes entrar { from { opacity: 0; transform: translateY(6px); } }
+    .num { font-weight: 800; color: var(--azul); }
+    .pill { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: #E8F0FA; color: var(--azul); }
+    .pill.rojo { background: #FDECEC; color: var(--rojo); }
+    .esq span { display: block; height: 12px; border-radius: 6px; background: linear-gradient(90deg, #EEF0F3 25%, #F7F8FA 50%, #EEF0F3 75%);
+                background-size: 200% 100%; animation: brillo 1.2s linear infinite; }
+    @keyframes brillo { to { background-position: -200% 0; } }
+
+    /* ---------- formulario ---------- */
+    form { display: flex; flex-wrap: wrap; gap: 10px; padding: 20px; }
+    input { font: inherit; padding: 10px 12px; border: 1px solid var(--borde); border-radius: 10px; min-width: 0; flex: 1 1 200px; }
+    .resultado { position: relative; min-height: 220px; border-top: 1px solid var(--borde); padding: 24px 20px; }
+    .resultado dl { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 0; }
+    .resultado dt { color: var(--gris); } .resultado dd { margin: 0; font-weight: 700; }
+
+    /* ---------- LOADING (loading_vote, versión transparente) ---------- */
+    .velo { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 2px; background: rgba(255,255,255,.8); backdrop-filter: blur(2px); z-index: 2;
+            opacity: 0; transition: opacity .25s; }
+    .velo.visible { opacity: 1; }
+    .velo .lottie { width: 160px; height: 160px; margin-top: -10px; }
+    .velo strong { color: var(--azul); font-size: 15px; }
+    .velo small { color: var(--gris); font-size: 12px; }
+
+    /* ---------- TRANSICIÓN entre páginas (marca_vota6) ---------- */
+    #transicion { position: fixed; inset: var(--header) 0 0 0; z-index: 25; display: grid; place-items: center;
+                  background: rgba(255, 248, 225, .95); backdrop-filter: blur(4px);
+                  opacity: 0; visibility: hidden; transition: opacity .18s, visibility .18s; }
+    #transicion.visible { opacity: 1; visibility: visible; }
+    #transicion .lottie { width: clamp(240px, 34vw, 420px); aspect-ratio: 240 / 200; }
+
+    /* ---------- panel de pruebas ---------- */
+    .pruebas { position: fixed; right: 16px; bottom: 16px; z-index: 40; background: #fff; border: 1px solid var(--borde);
+               border-radius: 12px; padding: 10px 14px; font-size: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.1); display: grid; gap: 6px; }
+    .pruebas b { font-size: 12px; color: var(--azul); }
+    .pruebas select { font: inherit; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="marca">Somos la <b>6</b></span>
+    <nav aria-label="Principal">
+      <button data-page="inicio" aria-current="page">Inicio</button>
+      <button data-page="candidatos">Candidatos</button>
+      <button data-page="propuestas">Propuestas</button>
+      <button data-page="donde">Dónde votar</button>
+    </nav>
+  </header>
+
+  <main id="pagina"></main>
+
+  <div id="transicion" aria-hidden="true"><div class="lottie" id="lottie-transicion"></div></div>
+
+  <div class="pruebas">
+    <b>Panel de pruebas</b>
+    <label>Demora del servidor
+      <select id="demora">
+        <option value="400">Rápida (0.4 s)</option>
+        <option value="2500" selected>Normal (2.5 s)</option>
+        <option value="6000">Lenta (6 s)</option>
+      </select>
+    </label>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script>
+    const MARCA = /*MARCA_DATA*/null;      // marca_vota6: transición entre páginas
+    const LOADER = /*LOADER_DATA*/null;    // loading_vote (transparente): carga de datos
+
+    const $ = s => document.querySelector(s);
+    const pagina = $('#pagina');
+    const esperar = ms => new Promise(ok => setTimeout(ok, ms));
+
+    /* ================= servidor simulado ================= */
+    const CANDIDATOS = [
+      ['Ana Torres', 'Presidencia', 'Lima', 'Inscrito'],
+      ['Luis Mendoza', 'Primera vicepresidencia', 'Arequipa', 'Inscrito'],
+      ['Rosa Huamán', 'Segunda vicepresidencia', 'Cusco', 'Inscrito'],
+      ['Carlos Paredes', 'Senado', 'La Libertad', 'En revisión'],
+      ['Julia Rojas', 'Senado', 'Piura', 'Inscrito'],
+      ['Miguel Salazar', 'Diputados', 'Junín', 'Inscrito'],
+      ['Carmen Vargas', 'Diputados', 'Lambayeque', 'En revisión'],
+      ['Pedro Quispe Ruiz', 'Diputados', 'Puno', 'Inscrito'],
+    ];
+    const api = {
+      candidatos: () => esperar(+$('#demora').value).then(() => CANDIDATOS),
+      local: dni => esperar(+$('#demora').value).then(() => ({
+        dni, local: 'I.E. N.º ' + (1000 + (+dni.slice(-3) || 123)), direccion: 'Av. Principal ' + (100 + (+dni.slice(-2) || 45)),
+        mesa: '0' + (40000 + (+dni.slice(-4) || 1234)), piso: 'Primer piso, aula ' + (1 + (+dni.slice(-1) || 3)),
+      })),
+    };
+
+    /* ================= LOADING (loading_vote) ================= */
+    // Muestra el loader sobre `zona` mientras la promesa no se resuelva.
+    // - Espera `retraso` ms antes de aparecer (evita parpadeos si la respuesta es rápida).
+    // - Una vez visible, se queda al menos 1.2 s.
+    async function conLoader(zona, promesa, texto, retraso = 200) {
+      const velo = document.createElement('div');
+      velo.className = 'velo';
+      velo.setAttribute('role', 'status');
+      velo.innerHTML = `<div class="lottie" aria-hidden="true"></div><strong>${texto}</strong><small>Esperando respuesta del servidor</small>`;
+      let anim = null, visibleDesde = 0;
+      zona.setAttribute('aria-busy', 'true');
+      const t = setTimeout(() => {
+        zona.appendChild(velo);
+        anim = lottie.loadAnimation({ container: velo.querySelector('.lottie'), renderer: 'svg', loop: true, autoplay: true, animationData: LOADER });
+        requestAnimationFrame(() => velo.classList.add('visible'));
+        visibleDesde = performance.now();
+      }, retraso);
+      try {
+        return await promesa;
+      } finally {
+        clearTimeout(t);
+        if (visibleDesde) {
+          const resto = 1200 - (performance.now() - visibleDesde);
+          if (resto > 0) await esperar(resto);
+          velo.classList.remove('visible');
+          setTimeout(() => { anim && anim.destroy(); velo.remove(); }, 250);
+        }
+        zona.removeAttribute('aria-busy');
+      }
+    }
+
+    /* ================= páginas ================= */
+    const PAGINAS = {
+      inicio: {
+        html: () => `<section class="hero">
+            <div><h1>Somos la 6</h1><p>Una web de ejemplo para ver juntas las dos animaciones:
+              la <b>transición</b> al cambiar de sección y el <b>loading</b> cuando se esperan datos.</p>
+              <button class="btn rojo" data-ir="candidatos">Ver candidatos</button></div>
+            <div class="tarjetas">
+              <div class="tarjeta"><h3>Transición (marca_vota6)</h3><p>Se reproduce al pulsar una opción del header mientras cambia la página.</p></div>
+              <div class="tarjeta"><h3>Loading (loading_vote)</h3><p>Aparece sobre la zona que espera datos del servidor: la tabla de candidatos o la consulta de local.</p></div>
+            </div></section>`,
+      },
+      candidatos: {
+        html: () => `<h1>Candidatos</h1><p class="sub">Los datos se piden al servidor al entrar en la página.</p>
+          <section class="panel"><div class="barra"><h2>Lista 6 · Datos de ejemplo</h2><button class="btn" id="recargar" disabled>Recargar</button></div>
+          <div class="zona" id="zona-candidatos"><table><thead><tr><th>N.º</th><th>Nombre</th><th>Cargo</th><th>Región</th><th>Estado</th></tr></thead>
+          <tbody id="filas"></tbody></table></div></section>`,
+        // La carga empieza al hacer clic en el header, en paralelo con la transición
+        precargar: () => api.candidatos(),
+        montar: async datosPendientes => {
+          const zona = $('#zona-candidatos'), boton = $('#recargar');
+          const esqueleto = () => $('#filas').innerHTML = Array.from({ length: 6 }, () =>
+            `<tr class="esq"><td><span style="width:24px"></span></td><td><span style="width:70%"></span></td><td><span style="width:60%"></span></td><td><span style="width:50%"></span></td><td><span style="width:60px"></span></td></tr>`).join('');
+          const pintar = datos => $('#filas').innerHTML = datos.map(([n, c, r, e], i) =>
+            `<tr class="nueva" style="animation-delay:${i * 40}ms"><td class="num">${i + 1}</td><td>${n}</td><td>${c}</td><td>${r}</td><td><span class="pill ${e === 'Inscrito' ? '' : 'rojo'}">${e}</span></td></tr>`).join('');
+
+          esqueleto();
+          // Si el servidor aún no respondió cuando termina la transición, el loader aparece de inmediato
+          pintar(await conLoader(zona, datosPendientes, 'Cargando candidatos…', 0));
+          boton.disabled = false;
+          boton.onclick = async () => {
+            boton.disabled = true; esqueleto();
+            pintar(await conLoader(zona, api.candidatos(), 'Actualizando candidatos…'));
+            boton.disabled = false;
+          };
+        },
+      },
+      propuestas: {
+        html: () => `<h1>Propuestas</h1><p class="sub">Contenido estático: solo usa la transición, no necesita loading.</p>
+          <div class="tarjetas">${['Educación', 'Salud', 'Empleo', 'Seguridad', 'Agua y saneamiento', 'Transporte'].map(t =>
+            `<div class="tarjeta"><h3>${t}</h3><p>Texto de ejemplo de la propuesta de ${t.toLowerCase()}.</p></div>`).join('')}</div>`,
+      },
+      donde: {
+        html: () => `<h1>Dónde votar</h1><p class="sub">Consulta tu local de votación (datos ficticios).</p>
+          <section class="panel"><form id="form-dni"><input id="dni" inputmode="numeric" maxlength="8" placeholder="Ingresa tu DNI (8 dígitos)" required pattern="[0-9]{8}">
+          <button class="btn">Consultar</button></form>
+          <div class="resultado" id="resultado"><p class="sub" style="margin:0">Aquí aparecerá tu local de votación.</p></div></section>`,
+        montar: () => {
+          $('#form-dni').addEventListener('submit', async e => {
+            e.preventDefault();
+            const boton = e.target.querySelector('button'); boton.disabled = true;
+            const r = await conLoader($('#resultado'), api.local($('#dni').value), 'Buscando tu local…');
+            $('#resultado').innerHTML = `<dl><dt>DNI</dt><dd>${r.dni}</dd><dt>Local</dt><dd>${r.local}</dd><dt>Dirección</dt><dd>${r.direccion}</dd><dt>Mesa</dt><dd>${r.mesa}</dd><dt>Ubicación</dt><dd>${r.piso}</dd></dl>`;
+            boton.disabled = false;
+          });
+        },
+      },
+    };
+
+    /* ================= TRANSICIÓN (marca_vota6) ================= */
+    const capa = $('#transicion');
+    const trans = lottie.loadAnimation({ container: $('#lottie-transicion'), renderer: 'svg', loop: false, autoplay: false, animationData: MARCA });
+    const segmento = n => { const m = MARCA.markers.find(x => x.cm === n); return [m.tm, m.tm + m.dr]; };
+    const reproducir = n => new Promise(ok => { trans.addEventListener('complete', ok, { once: true }); trans.playSegments(segmento(n), true); });
+
+    let actual = 'inicio', ocupado = false;
+    function montar(id, datos) {
+      pagina.innerHTML = PAGINAS[id].html();
+      pagina.querySelectorAll('[data-ir]').forEach(b => b.onclick = () => navegar(b.dataset.ir));
+      PAGINAS[id].montar && PAGINAS[id].montar(datos);
+    }
+
+    async function navegar(id) {
+      if (ocupado || id === actual) return;
+      ocupado = true; actual = id;
+      document.querySelectorAll('nav button').forEach(b => b.toggleAttribute('aria-current', b.dataset.page === id));
+      if (document.querySelector('nav [aria-current]')) document.querySelector('nav [aria-current]').setAttribute('aria-current', 'page');
+
+      const datos = PAGINAS[id].precargar ? PAGINAS[id].precargar() : null;   // la petición sale ya
+      capa.classList.add('visible');
+      await reproducir('marcar');           // la mano marca la papeleta
+      montar(id, datos);                    // se cambia la página detrás
+      window.scrollTo(0, 0);
+      await reproducir('salir');            // la papeleta se va
+      capa.classList.remove('visible');
+      ocupado = false;
+    }
+
+    document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => navegar(b.dataset.page)));
+    montar('inicio');
+  </script>
+</body>
+</html>

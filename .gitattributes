@@ -1,0 +1,21 @@
+# Finales de línea consistentes entre Windows y otros sistemas
+* text=auto eol=lf
+*.ps1 text eol=crlf
+
+# Binarios
+*.gif binary
+*.png binary
+*.jpg binary
+*.avif binary
+
+# Archivos generados por herramientas/pipeline.py: sin diff línea a línea y marcados como generados en GitHub
+*.rawr -diff linguist-generated
+*.fuente.json -diff linguist-generated
+loading_vote/glaxnimate/*.json -diff linguist-generated
+marca_vota6/glaxnimate/*.json -diff linguist-generated
+loading_vote/glaxnimate/demo.html linguist-generated
+marca_vota6/demo-header.html linguist-generated
+demo-completa.html linguist-generated
+
+# Vectores fuente trazados (JSON de una línea): sin diff
+herramientas/fuentes/*.json -diff

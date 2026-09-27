@@ -1,0 +1,24 @@
+# Temporales del pipeline (fotogramas renderizados, hojas de verificación): se regeneran
+herramientas/_salida/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Configuración local de Claude Code / editores
+.claude/
+.mcp.json
+.vscode/
+.idea/
+
+# Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Copias de seguridad de editores / Glaxnimate
+*.bak
+*~
+*.autosave

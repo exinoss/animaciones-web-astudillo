@@ -1,0 +1,132 @@
+# Animaciones "Somos la 6"
+
+Repositorio: **`animaciones-web-astudillo`**
+
+Animaciones web para la campaña de la **Lista 6**, hechas con **Glaxnimate** y exportadas a **Lottie** (reproducidas con `lottie-web`).
+
+> **Para otra IA o dev:** lee este archivo completo antes de tocar nada. Los `.json`, `.rawr`, `.gif` y las demos HTML **se generan**. No se editan a mano; se regeneran con el pipeline (ver [Flujo de trabajo](#flujo-de-trabajo)).
+
+## Qué hay
+
+| Carpeta / archivo | Qué es | README propio |
+|---|---|---|
+| [`loading_vote/`](loading_vote/) | **Loader** para cargas de datos: el 6 se construye, la papeleta se despliega, una mano raya la casilla, se dobla y cae en la urna "LISTA 6". | [loading_vote/README.md](loading_vote/README.md) |
+| [`marca_vota6/`](marca_vota6/) | **Transición entre páginas** del header: papeleta centrada, una mano raya en vertical la línea de la casilla. | [marca_vota6/README.md](marca_vota6/README.md) |
+| [`demo-completa.html`](demo-completa.html) | Web de ejemplo con las **dos animaciones trabajando juntas** (transición al cambiar de sección + loading al esperar datos). Se abre con doble clic. | — |
+| [`herramientas/`](herramientas/) | Scripts que construyen las animaciones, vectores fuente y plantillas de las demos. Se documenta aquí abajo. | — |
+| [`resources/`](resources/) | Material de marca original: `favicon.jpg` (el 6 de cinta), `somos6.png` (lockup "Somos la 6"), `logo.avif` (logo PS6). **No hay archivos de fuente tipográfica.** | — |
+| `disenos/circulo-rebote.svg` | Prueba inicial sin relación con la campaña. Se puede borrar. | — |
+| `herramientas/_salida/` | Temporal (fotogramas renderizados, hojas de verificación). Se puede borrar; se regenera. | — |
+
+## Requisitos (Windows)
+
+| Herramienta | Para qué | Instalación |
+|---|---|---|
+| **Glaxnimate 0.6** | Convertir a proyecto `.rawr`, exportar Lottie y renderizar fotogramas | `winget install --id KDE.Glaxnimate -e` |
+| **uv** | Ejecutar los scripts de Python con sus dependencias | `winget install astral-sh.uv` |
+| **CPython 3.11 (vía uv)** | Lo necesita la CLI de Glaxnimate (ver [Problemas conocidos](#problemas-conocidos)) | `uv python install 3.11` (el pipeline lo instala solo si falta) |
+| Inkscape 1.4 | Solo para convertir **textos nuevos** a trazados | `winget install Inkscape.Inkscape` |
+| Chrome | Solo para probar las demos | — |
+
+## Flujo de trabajo
+
+Todo se regenera con **un solo comando** desde la raíz del proyecto:
+
+```powershell
+uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py all
+```
+
+Qué hace, en orden, para cada animación:
+
+```
+construir_*.py ──► *.fuente.json ──► Glaxnimate ──► *.rawr (proyecto editable)
+                                                      │
+                                                      ├─► Glaxnimate ──► *.json (Lottie final) ──► + marcadores
+                                                      ├─► Glaxnimate render de todos los fotogramas ──► *.gif
+                                                      └─► plantillas/*.tpl.html + *.json incrustado ──► demos HTML
+```
+
+Subcomandos:
+
+| Comando | Qué regenera |
+|---|---|
+| `pipeline.py all` | Todo: loader, transición y demos |
+| `pipeline.py loader` | `loading_vote/glaxnimate/*` (las dos variantes, GIF y `demo.html`) |
+| `pipeline.py marca` | `marca_vota6/glaxnimate/*`, GIF y `marca_vota6/demo-header.html` |
+| `pipeline.py demos` | Solo `demo-completa.html` (a partir de los `.json` actuales) |
+| `pipeline.py desde-rawr loader\|marca` | Respeta un `.rawr` **editado a mano en Glaxnimate** y regenera desde él `.json`, marcadores, GIF y demos (no ejecuta `construir_*.py`) |
+| `pipeline.py verificar <archivo.rawr> [fotogramas…]` | Hoja de contactos en `herramientas/_salida/hoja.png` renderizada por Glaxnimate, para **revisar visualmente** |
+
+### Reglas del flujo (importante para IAs)
+
+1. **Después de cualquier cambio, ejecuta el pipeline completo de esa animación.** No basta con regenerar el `.json`: el **GIF** y las **demos HTML** llevan la animación incrustada y quedarían desactualizados. Una IA que no conozca este flujo suele olvidar el GIF y las demos. El pipeline los hace siempre.
+2. **No edites a mano** `*.json`, `*.fuente.json`, `*.gif`, `demo.html`, `demo-header.html` ni `demo-completa.html`. Edita el script o la plantilla en `herramientas/` y regenera.
+3. **Verifica visualmente antes de dar algo por terminado.** Usa `pipeline.py verificar` con los fotogramas clave (cada README de animación tiene su tabla de tiempos) y mira la imagen. Así se detectaron casi todos los errores durante el desarrollo.
+4. **Las dos animaciones comparten estilo.** Misma mano, mismo plumón azul y misma casilla con línea negra. Si cambias uno de esos elementos en una, cámbialo también en la otra.
+
+### Dos formas de modificar una animación
+
+**A. Por código (recomendada para cambios de tiempos, estructura o textos)**
+1. Edita `herramientas/construir_loader.py` o `herramientas/construir_marca.py`. Las constantes de tiempo están arriba y están comentadas.
+2. Ejecuta `pipeline.py loader` o `pipeline.py marca`.
+3. Ejecuta `pipeline.py verificar …` y revisa `herramientas/_salida/hoja.png`.
+
+**B. A mano en Glaxnimate (recomendada para retoques visuales)**
+1. Abre el `.rawr` en Glaxnimate, edita y guarda.
+2. Ejecuta `pipeline.py desde-rawr loader` o `desde-rawr marca`.
+3. ⚠️ **Si después alguien ejecuta `pipeline.py loader`, `marca` o `all`, el `.rawr` se reconstruye desde el código y los retoques manuales se pierden.** Hay dos salidas: trasladar el retoque al script, o no volver a usar el modo A para esa animación. Deja constancia en el README de la animación.
+4. El loader tiene **dos `.rawr`** (con fondo y transparente). Un retoque manual hay que hacerlo en ambos.
+
+## Marca
+
+| Color | Hex | Uso |
+|---|---|---|
+| Amarillo | `#FEBF12` | Fondos, franja de la papeleta |
+| Rojo | `#E82128` | Cinta del 6, "6" de "LISTA 6", destellos (variante transparente) |
+| Azul | `#004EA1` | Urna, plumón, rayón, "LISTA", casillas marcadas |
+| Tinta | `#1D2433` | Línea impresa de la casilla |
+
+- **El 6 de cinta** (`fuentes/trace6.json`) y **el lockup "Somos la 6"** (`fuentes/trace_lockup.json`) están **vectorizados** desde `resources/` con `trazar_seis.py` y `trazar_lockup.py`, que requieren `--with scikit-image --with numpy --with pillow`. Solo hay que volver a ejecutarlos si cambian las imágenes de `resources/`.
+- **Tipografía:** no hay archivos de fuente. "LISTA 6" se convirtió a trazado con **Arial Black** usando Inkscape. Para un texto nuevo:
+  ```powershell
+  # 1) crear herramientas/fuentes/mi-texto.svg con un <text font-family="Arial Black">…</text>
+  & "C:\Program Files\Inkscape\bin\inkscape.com" herramientas/fuentes/mi-texto.svg --actions="select-all;object-to-path;path-combine;export-filename:herramientas/fuentes/mi-texto_p.svg;export-plain-svg;export-do"
+  & "C:\Program Files\Inkscape\bin\inkscape.com" herramientas/fuentes/mi-texto_p.svg --query-all   # bbox para centrarlo
+  ```
+  Usa `inkscape.com` (consola), no `inkscape.exe`: el `.exe` no escribe archivos desde la línea de comandos.
+- **La mano** es el emoji ✍🏽 de [Noto Emoji](https://github.com/googlefonts/noto-emoji) (Google, **Apache 2.0**, hay que mantener el crédito). `preparar_mano.py` aplana sus `clipPath` (Lottie no los admite) y pinta el lápiz de azul de marca. Requiere `--with skia-pathops --with fonttools`. La punta del plumón está en `(15.6, 112.6)` del viewBox 128×128; los scripts la usan como ancla para que el trazo siga la punta.
+
+## Problemas conocidos
+
+| Problema | Solución aplicada |
+|---|---|
+| La **CLI** de Glaxnimate 0.6 (instalador de winget) se cierra con código `-1073740791` porque su Python interno viene sin librería estándar. La ventana normal funciona. | `pipeline.py` pone `PYTHONHOME` apuntando a un CPython 3.11 de uv. Se puede forzar con la variable `GLAXNIMATE_PYTHONHOME`. |
+| Los exportadores **SVG, GIF y dotLottie** de Glaxnimate 0.6 fallan: el SVG pierde las animaciones de transformación y los otros dos cierran el programa. | Solo se exporta **Lottie**. El GIF se arma con Pillow a partir del render de fotogramas de Glaxnimate. |
+| Glaxnimate **borra los marcadores** Lottie (`markers`) al exportar. | El pipeline los copia del `.fuente.json` al `.json` final. |
+| En el PC del autor, los **"Efectos de animación" de Windows están desactivados**, así que los navegadores activan `prefers-reduced-motion`. | Las demos no bloquean la animación por esa preferencia. Si se añade esa regla, en ese PC la animación se verá quieta. |
+| Chrome *headless* (para pruebas automáticas) activa "reducir movimiento" y casi no avanza `requestAnimationFrame` con `--virtual-time-budget`. | En pruebas: `--force-prefers-no-reduced-motion` y sustituir `requestAnimationFrame` por `setTimeout(…, 16)`. Para ver un fotograma exacto de un Lottie, usar `anim.goToAndStop(frame, true)`. |
+| Se probó el MCP de Inkscape (`sandraschi/inkscape-mcp`) y se descartó: Inkscape no anima y su vectorizador falla con Inkscape 1.4. | Eliminado del proyecto. |
+
+## Historial de decisiones
+
+1. Un primer loader en SVG + CSS dibujado a mano se descartó por baja calidad visual. Desde entonces **todo el arte sale de la marca vectorizada o de ilustraciones profesionales** (la mano de Noto), y la animación se hace en Glaxnimate/Lottie.
+2. **Loader:** fondo amarillo a sangre; texto de la urna "LISTA 6" (LISTA azul, 6 rojo); el check se reemplazó por una **papeleta en dos tarjetas** con rayón vertical; el rayón dura 0.4 s (duración total 3.5 s). Para la web se usa la **variante transparente** sobre un velo blanco, porque la de fondo amarillo parecía una tarjeta pegada.
+3. **Transición:** primero era una X sobre el 6. Se cambió a una **casilla con línea negra y rayón vertical** (así marca la gente), compacta, **sin giro** y **centrada y grande** sobre el contenido durante el cambio de página.
+
+## Software libre para animación (resumen del análisis inicial)
+
+| Necesidad | Software recomendado |
+|---|---|
+| Loaders, íconos y animación web | **Glaxnimate** (Lottie, el elegido) o **Friction** (SVG + SMIL, alternativa libre a After Effects) |
+| Dibujar el arte vectorial | **Inkscape** (no anima: no tiene línea de tiempo) |
+| Personajes y 2D cuadro a cuadro | **Synfig**, **OpenToonz**, **Krita**, **Pencil2D** |
+| 2D + 3D, lo más potente | **Blender** (Grease Pencil) |
+| Animación por código | **Motion Canvas**, **Theatre.js**, **lottie-web** / **dotlottie-web** (reproductores) |
+
+Rive (editor) y GSAP son gratuitos pero **no** son software libre.
+
+## Créditos
+
+- Mano: [Noto Emoji](https://github.com/googlefonts/noto-emoji) ✍🏽, © Google, licencia Apache 2.0 (modificada: lápiz recoloreado y recortes aplanados).
+- Reproductor: [lottie-web](https://github.com/airbnb/lottie-web), MIT.
+- Editor: [Glaxnimate](https://glaxnimate.org/), GPL-3.0 (solo herramienta; no se distribuye).
