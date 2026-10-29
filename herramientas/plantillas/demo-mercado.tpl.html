@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo · Logo Mercado Local animado</title>
+  <style>
+    :root { --azul: #063176; --amarillo: #FFC20E; --rojo: #E0121F; --tinta: #1D2433; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, "Segoe UI", sans-serif; background: #fff; color: var(--tinta); }
+
+    header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px;
+             padding: 8px 24px; background: #fff; border-bottom: 1px solid #e3e6ea; }
+    header .logo { width: 46px; aspect-ratio: 120 / 144; }
+    header b { color: var(--azul); font-size: 20px; letter-spacing: -.3px; }
+
+    main { max-width: 960px; margin: 0 auto; padding: 32px 16px 48px; }
+    h1 { color: var(--azul); font-size: clamp(26px, 5vw, 40px); margin: 0 0 6px; }
+    p { margin: 0 0 20px; color: #4a5160; }
+
+    .fondos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    figure { margin: 0; border-radius: 16px; padding: 16px; border: 1px solid #e3e6ea; display: grid; place-items: center; }
+    figure > div { width: min(100%, 260px); aspect-ratio: 120 / 144; }
+    figcaption { font-size: 13px; font-weight: 700; text-align: center; padding-top: 8px; }
+    .gris { background: #F2F4F7; }
+
+    .controles { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 20px 0 0;
+                 padding: 12px 14px; border: 1px solid #e3e6ea; border-radius: 12px; font-size: 14px; }
+    .controles button { border: 0; background: var(--azul); color: #fff; font: inherit; font-weight: 700;
+                        padding: 8px 16px; border-radius: 999px; cursor: pointer; }
+    .controles button.secundario { background: #fff; color: var(--azul); box-shadow: inset 0 0 0 2px var(--azul); }
+    output { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo lottie" role="img" aria-label="Mercado Local"></div>
+    <b>Mercado Local</b>
+  </header>
+
+  <main>
+    <h1>Logo Mercado Local animado</h1>
+    <p>Glaxnimate → Lottie, reproducido con <code>lottie_light</code>. Entrada de 1.5 s (marcador <code>entrada</code>) y después un bucle de 3 s (marcador <code>bucle</code>): olas, ave y toldo en movimiento. El diseño no cambia: al terminar la entrada el logo es idéntico al SVG.</p>
+
+    <div class="fondos">
+      <figure><div class="lottie" aria-hidden="true"></div><figcaption>Sobre blanco</figcaption></figure>
+      <figure class="gris"><div class="lottie" aria-hidden="true"></div><figcaption>Sobre gris claro</figcaption></figure>
+    </div>
+
+    <div class="controles">
+      <button id="repetir" type="button">Repetir entrada</button>
+      <button id="pausa" type="button" class="secundario">Pausar</button>
+      <label>Velocidad
+        <select id="vel">
+          <option value=".5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.5">1.5×</option>
+        </select>
+      </label>
+      <span>Ahora: <output id="estado">entrada</output></span>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js"></script>
+  <script>
+    const DATA = /*LOTTIE_DATA*/null;
+    // Segmentos definidos por los marcadores del Lottie
+    const seg = n => { const m = DATA.markers.find(x => x.cm === n); return [m.tm, m.tm + m.dr]; };
+    const estado = document.getElementById('estado');
+
+    // Reproduce la entrada una vez y, al terminar, deja el bucle repitiéndose
+    function montar(container) {
+      const anim = lottie.loadAnimation({ container, renderer: 'svg', loop: false, autoplay: false, animationData: DATA });
+      anim.addEventListener('complete', () => {
+        anim.loop = true;
+        anim.playSegments(seg('bucle'), true);
+        estado.textContent = 'bucle';
+      });
+      return anim;
+    }
+    const anims = [...document.querySelectorAll('.lottie')].map(montar);
+    const entrada = () => {
+      anims.forEach(a => { a.loop = false; a.playSegments(seg('entrada'), true); });
+      estado.textContent = 'entrada';
+      pausada = false; pausa.textContent = 'Pausar';
+    };
+
+    const pausa = document.getElementById('pausa');
+    let pausada = false;
+    pausa.addEventListener('click', () => {
+      pausada = !pausada;
+      anims.forEach(a => pausada ? a.pause() : a.play());
+      pausa.textContent = pausada ? 'Reproducir' : 'Pausar';
+    });
+    document.getElementById('repetir').addEventListener('click', entrada);
+    document.getElementById('vel').addEventListener('change', e => anims.forEach(a => a.setSpeed(+e.target.value)));
+    entrada();
+  </script>
+</body>
+</html>
