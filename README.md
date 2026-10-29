@@ -2,18 +2,19 @@
 
 Repositorio: **`animaciones-web-astudillo`**
 
-Animaciones web para la campaña de la **Lista 6**, hechas con **Glaxnimate** y exportadas a **Lottie** (reproducidas con `lottie-web`).
+Animaciones web para la campaña de la **Lista 6** (y el logo animado de **Mercado Local**), hechas con **Glaxnimate** y exportadas a **Lottie** (reproducidas con `lottie-web`).
 
 > **Para otra IA o dev:** lee este archivo completo antes de tocar nada. Los `.json`, `.rawr`, `.gif` y las demos HTML **se generan**. No se editan a mano; se regeneran con el pipeline (ver [Flujo de trabajo](#flujo-de-trabajo)).
 
 ## 🚀 Qué usar en el sitio web
 
-**Solo estos dos archivos van a producción.** Todo lo demás es material de trabajo.
+**Solo estos archivos van a producción.** Todo lo demás es material de trabajo.
 
 | Uso | Archivo | Tamaño (gzip) |
 |---|---|---|
 | Loading de datos | [`loading_vote/glaxnimate/produccion/loader-vota6.min.json`](loading_vote/glaxnimate/produccion/loader-vota6.min.json) | 29 KB (≈6.6 KB) |
 | Transición entre páginas | [`marca_vota6/glaxnimate/produccion/marca-vota6.min.json`](marca_vota6/glaxnimate/produccion/marca-vota6.min.json) | 26 KB (≈7.5 KB) |
+| Logo Mercado Local animado (entrada + bucle) | [`mercado_local/glaxnimate/produccion/logo-mercado-local.min.json`](mercado_local/glaxnimate/produccion/logo-mercado-local.min.json) | 55 KB (≈6 KB) |
 
 Reproductor: **`lottie_light`** (versión ligera de lottie-web: solo SVG, sin expresiones, ≈47 KB gzip frente a ≈77 KB del completo):
 
@@ -41,9 +42,10 @@ Por qué este formato:
 |---|---|---|
 | [`loading_vote/`](loading_vote/) | **Loader** para cargas de datos: el 6 se construye, la papeleta se despliega, una mano raya la casilla, se dobla y cae en la urna "LISTA 6". | [loading_vote/README.md](loading_vote/README.md) |
 | [`marca_vota6/`](marca_vota6/) | **Transición entre páginas** del header: papeleta centrada, una mano raya en vertical la línea de la casilla. | [marca_vota6/README.md](marca_vota6/README.md) |
+| [`mercado_local/`](mercado_local/) | **Logo Mercado Local animado**, sin cambiar el diseño: entrada (el logo se arma) y bucle de 3 s (olas, ave y toldo en movimiento). | [mercado_local/README.md](mercado_local/README.md) |
 | [`demo-completa.html`](demo-completa.html) | Web de ejemplo con las **dos animaciones trabajando juntas** (transición al cambiar de sección + loading al esperar datos). Se abre con doble clic. | — |
 | [`herramientas/`](herramientas/) | Scripts que construyen las animaciones, vectores fuente y plantillas de las demos. Se documenta aquí abajo. | — |
-| [`resources/`](resources/) | Material de marca original: `favicon.jpg` (el 6 de cinta), `somos6.png` (lockup "Somos la 6"), `logo.avif` (logo PS6). **No hay archivos de fuente tipográfica.** | — |
+| [`resources/`](resources/) | Material de marca original: `favicon.jpg` (el 6 de cinta), `somos6.png` (lockup "Somos la 6"), `logo.avif` (logo PS6), `mercado-local.svg` (logo Mercado Local, fuente de su animación). **No hay archivos de fuente tipográfica.** | — |
 | `disenos/circulo-rebote.svg` | Prueba inicial sin relación con la campaña. Se puede borrar. | — |
 | `herramientas/_salida/` | Temporal (fotogramas renderizados, hojas de verificación). Se puede borrar; se regenera. | — |
 
@@ -56,6 +58,19 @@ Por qué este formato:
 | **CPython 3.11 (vía uv)** | Lo necesita la CLI de Glaxnimate (ver [Problemas conocidos](#problemas-conocidos)) | `uv python install 3.11` (el pipeline lo instala solo si falta) |
 | Inkscape 1.4 | Solo para convertir **textos nuevos** a trazados | `winget install Inkscape.Inkscape` |
 | Chrome | Solo para probar las demos | — |
+
+### Linux
+
+Glaxnimate 0.6 no está en los repositorios de Ubuntu 24.04 y el wheel de PyPI (`glaxnimate`) está compilado para otra distribución (no carga en Ubuntu). Si no puedes usar el AppImage o el Flatpak de KDE, **compila la versión 0.6.0** con Qt5/KF5, que sí están en Ubuntu 24.04. Con ese binario, `pipeline.py loader`, `marca` y `demos` generan los mismos `produccion/*.min.json`, GIF y demos, byte a byte, que los que hay en el repositorio.
+
+```bash
+sudo apt-get install -y build-essential cmake ninja-build extra-cmake-modules qtbase5-dev qtbase5-private-dev qttools5-dev libqt5svg5-dev libkf5i18n-dev libkf5coreaddons-dev libkf5widgetsaddons-dev libkf5xmlgui-dev libkf5archive-dev libkf5completion-dev libkf5iconthemes-dev libkf5config-dev libkf5crash-dev libpotrace-dev python3-dev libavformat-dev libavcodec-dev libavutil-dev libswscale-dev libarchive-dev zlib1g-dev gettext inkscape
+git clone --depth 1 --branch v0.6.0 --recurse-submodules https://github.com/KDE/glaxnimate.git
+cmake -S glaxnimate -B glaxnimate/build -G Ninja -DCMAKE_BUILD_TYPE=Release -DQT_MAJOR_VERSION=5 -DCMAKE_INSTALL_PREFIX=/opt/glaxnimate
+ninja -C glaxnimate/build install
+```
+
+Después, antes de ejecutar el pipeline: `export GLAXNIMATE_EXE=/opt/glaxnimate/bin/glaxnimate` (si no, busca `glaxnimate` en el `PATH`) y, en un servidor sin pantalla, `export QT_QPA_PLATFORM=offscreen`. En Linux el pipeline no toca `PYTHONHOME` (eso solo hace falta en Windows). Inkscape 1.2 de `apt` convierte texto a trazados con el mismo comando (`inkscape` en lugar de `inkscape.com`), pero **Arial Black no viene en Linux**: instálala antes de convertir textos de marca o usará otra fuente.
 
 ## Flujo de trabajo
 
@@ -80,11 +95,12 @@ Subcomandos:
 
 | Comando | Qué regenera |
 |---|---|
-| `pipeline.py all` | Todo: loader, transición y demos |
+| `pipeline.py all` | Todo: loader, transición, demos y logo Mercado Local |
 | `pipeline.py loader` | `loading_vote/glaxnimate/*` (las dos variantes, `produccion/`, GIF y `demo.html`) |
 | `pipeline.py marca` | `marca_vota6/glaxnimate/*` (incluido `produccion/`), GIF y `marca_vota6/demo-header.html` |
 | `pipeline.py demos` | Solo `demo-completa.html` (a partir de los `.json` actuales) |
-| `pipeline.py desde-rawr loader\|marca` | Respeta un `.rawr` **editado a mano en Glaxnimate** y regenera desde él `.json`, marcadores, GIF y demos (no ejecuta `construir_*.py`) |
+| `pipeline.py mercado` | `mercado_local/glaxnimate/*` (incluido `produccion/`), GIF y `mercado_local/demo.html` |
+| `pipeline.py desde-rawr loader\|marca\|mercado` | Respeta un `.rawr` **editado a mano en Glaxnimate** y regenera desde él `.json`, marcadores, GIF y demos (no ejecuta `construir_*.py`) |
 | `pipeline.py verificar <archivo.rawr> [fotogramas…]` | Hoja de contactos en `herramientas/_salida/hoja.png` renderizada por Glaxnimate, para **revisar visualmente** |
 
 ### Reglas del flujo (importante para IAs)

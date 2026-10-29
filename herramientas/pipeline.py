@@ -5,7 +5,8 @@ Uso (desde la raíz del proyecto):
     uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py loader
     uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py marca
     uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py demos
-    uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py desde-rawr loader|marca
+    uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py mercado
+    uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py desde-rawr loader|marca|mercado
     uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py verificar <archivo.rawr|.json> [fotogramas...]
 
 Cada animación sigue SIEMPRE el mismo flujo:
@@ -21,12 +22,17 @@ ROOT = HERR.parent
 SALIDA = HERR / "_salida"                     # temporal: fotogramas y hojas de verificación
 LOADER = ROOT / "loading_vote" / "glaxnimate"
 MARCA = ROOT / "marca_vota6" / "glaxnimate"
+MERCADO = ROOT / "mercado_local" / "glaxnimate"
 PLANT = HERR / "plantillas"
 # Únicos archivos que usa la web (las demos también los usan, para probar exactamente lo que va a producción)
 LOADER_PROD = LOADER / "produccion" / "loader-vota6.min.json"     # variante transparente, optimizada
 MARCA_PROD = MARCA / "produccion" / "marca-vota6.min.json"         # con marcadores "marcar" / "salir"
+MERCADO_PROD = MERCADO / "produccion" / "logo-mercado-local.min.json"  # con marcadores "entrada" / "bucle"
 
-GX = Path(os.environ.get("GLAXNIMATE_EXE", Path(os.environ.get("LOCALAPPDATA", "")) / "Programs/Glaxnimate/bin/glaxnimate.exe"))
+WINDOWS = os.name == "nt"
+GX = Path(os.environ.get("GLAXNIMATE_EXE") or (
+    Path(os.environ.get("LOCALAPPDATA", "")) / "Programs/Glaxnimate/bin/glaxnimate.exe" if WINDOWS
+    else shutil.which("glaxnimate") or "/usr/bin/glaxnimate"))
 
 
 def gx_env():
@@ -34,6 +40,8 @@ def gx_env():
     sin PYTHONHOME apuntando a un CPython 3.11 se cierra con código -1073740791."""
     env = dict(os.environ)
     home = os.environ.get("GLAXNIMATE_PYTHONHOME")
+    if not home and not WINDOWS:
+        return env                            # en Linux/macOS usa el Python del sistema con el que se compiló
     if not home:
         # Buscar un CPython 3.11 completo gestionado por uv (no el de un entorno virtual temporal)
         def buscar():
@@ -142,6 +150,16 @@ def marca(desde_rawr=False):
     incrustar("demo-header.tpl.html", ROOT / "marca_vota6" / "demo-header.html", LOTTIE_DATA=MARCA_PROD)
 
 
+def mercado(desde_rawr=False):
+    print("Logo Mercado Local (mercado_local)")
+    if not desde_rawr:
+        py("construir_mercado.py")
+    convertir(MERCADO, "logo-mercado-local", desde_rawr)
+    produccion(MERCADO / "logo-mercado-local.json", MERCADO_PROD)
+    gif(MERCADO / "logo-mercado-local.rawr", MERCADO / "logo-mercado-local.gif")
+    incrustar("demo-mercado.tpl.html", ROOT / "mercado_local" / "demo.html", LOTTIE_DATA=MERCADO_PROD)
+
+
 def demos():
     print("Demo combinada")
     incrustar("demo-completa.tpl.html", ROOT / "demo-completa.html", MARCA_DATA=MARCA_PROD, LOADER_DATA=LOADER_PROD)
@@ -174,13 +192,16 @@ def verificar(archivo, fotogramas):
 
 if __name__ == "__main__":
     if not GX.exists():
-        raise SystemExit(f"No encuentro Glaxnimate en {GX}. Instálalo con: winget install --id KDE.Glaxnimate -e")
+        raise SystemExit(f"No encuentro Glaxnimate en {GX}. Instálalo con: winget install --id KDE.Glaxnimate -e "
+                         "(o indica la ruta en GLAXNIMATE_EXE)")
     cmd, *resto = sys.argv[1:] or ["all"]
     if cmd == "loader": loader()
     elif cmd == "marca": marca()
     elif cmd == "demos": demos()
-    elif cmd == "all": loader(); marca(); demos()
+    elif cmd == "mercado": mercado()
+    elif cmd == "all": loader(); marca(); demos(); mercado()
     elif cmd == "desde-rawr" and resto[:1] == ["loader"]: loader(desde_rawr=True); demos()
     elif cmd == "desde-rawr" and resto[:1] == ["marca"]: marca(desde_rawr=True); demos()
+    elif cmd == "desde-rawr" and resto[:1] == ["mercado"]: mercado(desde_rawr=True)
     elif cmd == "verificar": verificar(resto[0], resto[1:])
     else: raise SystemExit(__doc__)
