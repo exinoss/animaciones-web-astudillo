@@ -2,7 +2,7 @@
 
 Repositorio: **`animaciones-web-astudillo`**
 
-Animaciones web para la campaña de la **Lista 6** (y el logo animado de **Mercado Local**), hechas con **Glaxnimate** y exportadas a **Lottie** (reproducidas con `lottie-web`).
+Animaciones web para la campaña de la **Lista 6** (incluida la transición del velero de **Carlos Astudillo**, y el logo animado de **Mercado Local**), hechas con **Glaxnimate** y exportadas a **Lottie** (reproducidas con `lottie-web`).
 
 > **Para otra IA o dev:** lee este archivo completo antes de tocar nada. Los `.json`, `.rawr`, `.gif` y las demos HTML **se generan**. No se editan a mano; se regeneran con el pipeline (ver [Flujo de trabajo](#flujo-de-trabajo)).
 
@@ -15,6 +15,7 @@ Animaciones web para la campaña de la **Lista 6** (y el logo animado de **Merca
 | Loading de datos | [`loading_vote/glaxnimate/produccion/loader-vota6.min.json`](loading_vote/glaxnimate/produccion/loader-vota6.min.json) | 29 KB (≈6.6 KB) |
 | Transición entre páginas | [`marca_vota6/glaxnimate/produccion/marca-vota6.min.json`](marca_vota6/glaxnimate/produccion/marca-vota6.min.json) | 26 KB (≈7.5 KB) |
 | Logo Mercado Local animado (entrada + bucle) | [`mercado_local/glaxnimate/produccion/logo-mercado-local.min.json`](mercado_local/glaxnimate/produccion/logo-mercado-local.min.json) | 55 KB (≈6 KB) |
+| Transición del velero Carlos Astudillo (entrar + bucle + salir) | [`barco_transicion/glaxnimate/produccion/barco-transicion.min.json`](barco_transicion/glaxnimate/produccion/barco-transicion.min.json) | 53 KB (≈8.4 KB) |
 
 Reproductor: **`lottie_light`** (versión ligera de lottie-web: solo SVG, sin expresiones, ≈47 KB gzip frente a ≈77 KB del completo):
 
@@ -42,10 +43,11 @@ Por qué este formato:
 |---|---|---|
 | [`loading_vote/`](loading_vote/) | **Loader** para cargas de datos: el 6 se construye, la papeleta se despliega, una mano raya la casilla, se dobla y cae en la urna "LISTA 6". | [loading_vote/README.md](loading_vote/README.md) |
 | [`marca_vota6/`](marca_vota6/) | **Transición entre páginas** del header: papeleta centrada, una mano raya en vertical la línea de la casilla. | [marca_vota6/README.md](marca_vota6/README.md) |
+| [`barco_transicion/`](barco_transicion/) | **Transición del velero Carlos Astudillo**, sin cambiar el diseño (solo se rellena de blanco el hueco de la vela): entra navegando, se mece mientras carga (bandera ondeando y velas hinchándose) y sale navegando. | [barco_transicion/README.md](barco_transicion/README.md) |
 | [`mercado_local/`](mercado_local/) | **Logo Mercado Local animado**, sin cambiar el diseño: entrada (el logo se arma) y bucle de 3 s (olas, ave y toldo en movimiento). | [mercado_local/README.md](mercado_local/README.md) |
 | [`demo-completa.html`](demo-completa.html) | Web de ejemplo con las **dos animaciones trabajando juntas** (transición al cambiar de sección + loading al esperar datos). Se abre con doble clic. | — |
 | [`herramientas/`](herramientas/) | Scripts que construyen las animaciones, vectores fuente y plantillas de las demos. Se documenta aquí abajo. | — |
-| [`resources/`](resources/) | Material de marca original: `favicon.jpg` (el 6 de cinta), `somos6.png` (lockup "Somos la 6"), `logo.avif` (logo PS6), `mercado-local.svg` (logo Mercado Local, fuente de su animación). **No hay archivos de fuente tipográfica.** | — |
+| [`resources/`](resources/) | Material de marca original: `favicon.jpg` (el 6 de cinta), `somos6.png` (lockup "Somos la 6"), `logo.avif` (logo PS6), `mercado-local.svg` (logo Mercado Local) y `carlos-astudillo.svg` (velero Carlos Astudillo), fuentes de sus animaciones. **No hay archivos de fuente tipográfica.** | — |
 | `disenos/circulo-rebote.svg` | Prueba inicial sin relación con la campaña. Se puede borrar. | — |
 | `herramientas/_salida/` | Temporal (fotogramas renderizados, hojas de verificación). Se puede borrar; se regenera. | — |
 
@@ -95,12 +97,13 @@ Subcomandos:
 
 | Comando | Qué regenera |
 |---|---|
-| `pipeline.py all` | Todo: loader, transición, demos y logo Mercado Local |
+| `pipeline.py all` | Todo: loader, transición, demos, logo Mercado Local y velero |
 | `pipeline.py loader` | `loading_vote/glaxnimate/*` (las dos variantes, `produccion/`, GIF y `demo.html`) |
 | `pipeline.py marca` | `marca_vota6/glaxnimate/*` (incluido `produccion/`), GIF y `marca_vota6/demo-header.html` |
 | `pipeline.py demos` | Solo `demo-completa.html` (a partir de los `.json` actuales) |
 | `pipeline.py mercado` | `mercado_local/glaxnimate/*` (incluido `produccion/`), GIF y `mercado_local/demo.html` |
-| `pipeline.py desde-rawr loader\|marca\|mercado` | Respeta un `.rawr` **editado a mano en Glaxnimate** y regenera desde él `.json`, marcadores, GIF y demos (no ejecuta `construir_*.py`) |
+| `pipeline.py barco` | `barco_transicion/glaxnimate/*` (incluido `produccion/`), GIF y `barco_transicion/demo.html` |
+| `pipeline.py desde-rawr loader\|marca\|mercado\|barco` | Respeta un `.rawr` **editado a mano en Glaxnimate** y regenera desde él `.json`, marcadores, GIF y demos (no ejecuta `construir_*.py`) |
 | `pipeline.py verificar <archivo.rawr> [fotogramas…]` | Hoja de contactos en `herramientas/_salida/hoja.png` renderizada por Glaxnimate, para **revisar visualmente** |
 
 ### Reglas del flujo (importante para IAs)

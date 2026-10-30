@@ -6,7 +6,8 @@ Uso (desde la raíz del proyecto):
     uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py marca
     uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py demos
     uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py mercado
-    uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py desde-rawr loader|marca|mercado
+    uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py barco
+    uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py desde-rawr loader|marca|mercado|barco
     uv run --no-project --with svgpathtools --with pillow python herramientas/pipeline.py verificar <archivo.rawr|.json> [fotogramas...]
 
 Cada animación sigue SIEMPRE el mismo flujo:
@@ -23,11 +24,13 @@ SALIDA = HERR / "_salida"                     # temporal: fotogramas y hojas de 
 LOADER = ROOT / "loading_vote" / "glaxnimate"
 MARCA = ROOT / "marca_vota6" / "glaxnimate"
 MERCADO = ROOT / "mercado_local" / "glaxnimate"
+BARCO = ROOT / "barco_transicion" / "glaxnimate"
 PLANT = HERR / "plantillas"
 # Únicos archivos que usa la web (las demos también los usan, para probar exactamente lo que va a producción)
 LOADER_PROD = LOADER / "produccion" / "loader-vota6.min.json"     # variante transparente, optimizada
 MARCA_PROD = MARCA / "produccion" / "marca-vota6.min.json"         # con marcadores "marcar" / "salir"
 MERCADO_PROD = MERCADO / "produccion" / "logo-mercado-local.min.json"  # con marcadores "entrada" / "bucle"
+BARCO_PROD = BARCO / "produccion" / "barco-transicion.min.json"     # con marcadores "entrar" / "bucle" / "salir"
 
 WINDOWS = os.name == "nt"
 GX = Path(os.environ.get("GLAXNIMATE_EXE") or (
@@ -160,6 +163,16 @@ def mercado(desde_rawr=False):
     incrustar("demo-mercado.tpl.html", ROOT / "mercado_local" / "demo.html", LOTTIE_DATA=MERCADO_PROD)
 
 
+def barco(desde_rawr=False):
+    print("Velero Carlos Astudillo (barco_transicion)")
+    if not desde_rawr:
+        py("construir_barco.py")
+    convertir(BARCO, "barco-transicion", desde_rawr)
+    produccion(BARCO / "barco-transicion.json", BARCO_PROD)
+    gif(BARCO / "barco-transicion.rawr", BARCO / "barco-transicion.gif")
+    incrustar("demo-barco.tpl.html", ROOT / "barco_transicion" / "demo.html", LOTTIE_DATA=BARCO_PROD)
+
+
 def demos():
     print("Demo combinada")
     incrustar("demo-completa.tpl.html", ROOT / "demo-completa.html", MARCA_DATA=MARCA_PROD, LOADER_DATA=LOADER_PROD)
@@ -199,9 +212,11 @@ if __name__ == "__main__":
     elif cmd == "marca": marca()
     elif cmd == "demos": demos()
     elif cmd == "mercado": mercado()
-    elif cmd == "all": loader(); marca(); demos(); mercado()
+    elif cmd == "barco": barco()
+    elif cmd == "all": loader(); marca(); demos(); mercado(); barco()
     elif cmd == "desde-rawr" and resto[:1] == ["loader"]: loader(desde_rawr=True); demos()
     elif cmd == "desde-rawr" and resto[:1] == ["marca"]: marca(desde_rawr=True); demos()
     elif cmd == "desde-rawr" and resto[:1] == ["mercado"]: mercado(desde_rawr=True)
+    elif cmd == "desde-rawr" and resto[:1] == ["barco"]: barco(desde_rawr=True)
     elif cmd == "verificar": verificar(resto[0], resto[1:])
     else: raise SystemExit(__doc__)
