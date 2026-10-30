@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo · Transición del velero Carlos Astudillo</title>
+  <style>
+    :root { --amarillo: #FEBF12; --rojo: #E82128; --azul: #003969; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, "Segoe UI", sans-serif; background: #fff; color: #1d2433; }
+
+    header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 24px;
+             padding: 12px 24px; background: var(--azul); flex-wrap: wrap; }
+    .brand { font-weight: 900; font-size: 20px; color: #fff; }
+    .brand b { color: var(--amarillo); }
+    nav { display: flex; gap: 6px; flex-wrap: wrap; }
+    nav button { border: 0; background: transparent; font: inherit; font-weight: 700; color: #fff;
+                 padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+    nav button:hover { background: rgba(255,255,255,.15); }
+    nav button[aria-current="page"] { background: var(--amarillo); color: var(--azul); }
+
+    main { max-width: 880px; margin: 0 auto; padding: 40px 24px; }
+    main h1 { color: var(--azul); font-size: clamp(28px, 5vw, 44px); margin: 0 0 12px; }
+    .previa { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-top: 28px; padding: 16px;
+              border: 1px solid #e3e6ea; border-radius: 16px; }
+    .previa > div { width: 180px; aspect-ratio: 1; }
+    .previa p { flex: 1; min-width: 220px; margin: 0; color: #4a5160; }
+
+    /* Transición: cubre el contenido (el header queda visible) con el velero centrado */
+    #transicion { position: fixed; inset: 64px 0 0 0; z-index: 20; display: grid; place-items: center;
+                  background: rgba(255, 255, 255, .93); backdrop-filter: blur(4px); }
+    #transicion > div { width: clamp(220px, 32vw, 400px); aspect-ratio: 1; }
+    main { transition: opacity .2s; }
+    main.cambiando { opacity: .35; }
+
+    .controles { position: fixed; right: 16px; bottom: 16px; z-index: 30; display: grid; gap: 6px; background: #fff;
+                 border: 1px solid #e3e6ea; border-radius: 12px; padding: 10px 12px; font-size: 13px;
+                 box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Carlos Astudillo · <b>Lista 6</b></div>
+    <nav aria-label="Principal">
+      <button aria-current="page" data-page="inicio">Inicio</button>
+      <button data-page="propuestas">Propuestas</button>
+      <button data-page="equipo">Equipo</button>
+      <button data-page="contacto">Contacto</button>
+    </nav>
+  </header>
+
+  <main id="contenido"></main>
+
+  <div id="transicion" hidden><div id="lottie" role="img" aria-label="Cargando"></div></div>
+
+  <div class="controles">
+    <label>Carga simulada
+      <select id="carga">
+        <option value="0">Inmediata (entrar + salir)</option>
+        <option value="1500" selected>1.5 s (se mece mientras carga)</option>
+        <option value="4000">4 s</option>
+      </select>
+    </label>
+    <label>Velocidad
+      <select id="vel">
+        <option value="1" selected>1×</option>
+        <option value="1.3">1.3×</option>
+      </select>
+    </label>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js"></script>
+  <script>
+    const DATA = /*LOTTIE_DATA*/null;
+    const PAGINAS = {
+      "inicio": ["Inicio", "Bienvenido a la campaña de Carlos Astudillo, Lista 6."],
+      "propuestas": ["Propuestas", "Nuestras propuestas para la ciudad."],
+      "equipo": ["Equipo", "Conoce a quienes nos acompañan."],
+      "contacto": ["Contacto", "Escríbenos y súmate."],
+    };
+
+    // Segmentos definidos por los marcadores del Lottie
+    const seg = n => { const m = DATA.markers.find(x => x.cm === n); return [m.tm, m.tm + m.dr]; };
+    const MITAD = DATA.markers.find(x => x.cm === 'bucle').dr / 2;   // al empezar y a la mitad del bucle, el velero está en reposo
+
+    const capa = document.getElementById('transicion');
+    const contenido = document.getElementById('contenido');
+    const anim = lottie.loadAnimation({ container: document.getElementById('lottie'), renderer: 'svg',
+                                        loop: false, autoplay: false, animationData: DATA });
+
+    // Reproduce un segmento y espera a que termine
+    const jugar = n => new Promise(ok => {
+      const fin = () => { anim.removeEventListener('complete', fin); ok(); };
+      anim.addEventListener('complete', fin);
+      anim.loop = false;
+      anim.playSegments(seg(n), true);
+    });
+
+    // Mece el velero hasta que listo() sea cierto y termina en el siguiente punto de reposo, para pasar a 'salir' sin salto
+    const mecerHasta = listo => new Promise(ok => {
+      let previo = 0;
+      const mira = () => {
+        const f = anim.currentFrame;                       // relativo al inicio del bucle
+        const reposo = (previo < MITAD && f >= MITAD) || f < previo;
+        previo = f;
+        if (reposo && listo()) { anim.removeEventListener('enterFrame', mira); ok(); }
+      };
+      anim.addEventListener('enterFrame', mira);
+      anim.loop = true;
+      anim.playSegments(seg('bucle'), true);
+    });
+
+    const pintar = id => {
+      const [t, p] = PAGINAS[id];
+      contenido.innerHTML = `<h1>${t}</h1><p>${p}</p>` + (id === 'inicio' ? `
+        <div class="previa"><div id="previa" aria-hidden="true"></div>
+        <p>Vista previa del bucle: el velero se mece, la bandera ondea y las velas se hinchan. Pulsa una opción del menú para ver la transición completa (entrar, bucle mientras carga y salir).</p></div>` : '');
+      if (id === 'inicio') {
+        const previa = lottie.loadAnimation({ name: 'previa', container: document.getElementById('previa'), renderer: 'svg',
+                                              loop: true, autoplay: false, animationData: DATA });
+        previa.playSegments(seg('bucle'), true);
+      }
+    };
+    const cargar = () => new Promise(ok => setTimeout(ok, +document.getElementById('carga').value));
+
+    let ocupado = false;
+    async function navegar(id, boton) {
+      if (ocupado || boton.getAttribute('aria-current')) return;
+      ocupado = true;
+      document.querySelectorAll('nav button').forEach(b => b.removeAttribute('aria-current'));
+      boton.setAttribute('aria-current', 'page');                 // marca el botón al instante
+      let listo = false;
+      cargar(id).then(() => { listo = true; });                    // pide los datos ya, en paralelo
+      capa.hidden = false;
+      contenido.classList.add('cambiando');
+      await jugar('entrar');
+      lottie.destroy('previa');
+      pintar(id);                                                  // cambia la página detrás
+      window.scrollTo(0, 0);
+      contenido.classList.remove('cambiando');
+      if (!listo) await mecerHasta(() => listo);
+      await jugar('salir');
+      capa.hidden = true;
+      ocupado = false;
+    }
+
+    document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => navegar(b.dataset.page, b)));
+    document.getElementById('vel').addEventListener('change', e => anim.setSpeed(+e.target.value));
+    pintar('inicio');
+  </script>
+</body>
+</html>
